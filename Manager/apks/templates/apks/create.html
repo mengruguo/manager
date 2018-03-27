@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="container">
-        <form class="form-horizontal" method="post" action="{% url "apks:create" %}" autocomplete="off">
+        <form class="form-horizontal" method="post" action="{% url "apks:save" %}" autocomplete="off">
             {% csrf_token %}
             <div class="form-group">
                 <label for="inputAppName" class="col-sm-2 control-label">应用名称:</label>

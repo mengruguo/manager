@@ -9,6 +9,10 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    <script src="{% static 'apks/js/index.js' %}"></script>
+    <script>
+        searchUrl = "{% url 'apks:search' %}";
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +23,7 @@
         </div>
     </div>
     <div class="container">
-        <table id="table" class="table table-striped table-bordered table-hover" width="100%">
+        <table id="apps_table" class="table table-striped table-bordered table-hover" width="100%">
             <thead>
             <tr>
                 <th width="20%">ID</th>
@@ -30,16 +34,6 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td width="20%">1</td>
-                <td>10000</td>
-                <td>阅读</td>
-                <td>1.0.1</td>
-                <td>2018-3-26 19:51</td>
-                <td>编辑、删除按钮</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 {% endblock %}
