@@ -9,5 +9,6 @@ def index(request):
 
 
 def create(request):
-    # app_id=
-    return render(request, 'sdks/index.html')
+    sdk_name = request.POST.get('inputSdkName')
+    sdk_remark = request.POST.get('inputSdkRemark')
+    return render(request, 'sdks/create.html')

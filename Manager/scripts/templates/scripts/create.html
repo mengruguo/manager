@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block style %}
+    <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    {#    <script>#}
+    {#        var submit = $("button[type=submit]");#}
+    {##}
+    {#    </script>#}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="bs-docs-header" tabindex="-1">
+        <div class="container">
+            <h1>脚本管理</h1>
+            <p>支持新建脚本</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <form class="form-horizontal" method="post" action="{% url "devices:create" %}" autocomplete="off">
+            {% csrf_token %}
+            <!--<div class="form-group">-->
+                <!--<label for="inputDeviceFirm" class="col-sm-2 control-label">数据类型:</label>-->
+                <!--<div class="col-sm-6">-->
+                    <!---->
+                <!--</div>-->
+            <!--</div>-->
+
+        </form>
+    </div>
+{% endblock %}
+

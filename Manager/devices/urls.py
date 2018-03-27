@@ -1,10 +1,4 @@
-#!/usr/bin/env python
-# _*_coding:utf-8_*_
-# @Time    : 2018/3/26 19:24
-# @Author  : 6005001639
-# @FileName: urls.py.py
-# @Software: PyCharm Community Edition
-
+# -*- coding: utf-8 -*-
 from django.conf.urls import url
 
 from views import *

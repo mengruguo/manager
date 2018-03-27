@@ -8,4 +8,7 @@ def index(request):
 
 def create(request):
     # app_id=
-    return render(request, 'devices/index.html')
+    device_firm = request.POST.get('inputDeviceFirm')
+    device_model = request.POST.get('inputDeviceModel')
+    device_version = request.POST.get('inputDeviceVersion')
+    return render(request, 'devices/create.html')

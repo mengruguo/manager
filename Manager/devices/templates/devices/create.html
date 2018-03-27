@@ -1,0 +1,64 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block style %}
+    <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    {#    <script>#}
+    {#        var submit = $("button[type=submit]");#}
+    {##}
+    {#    </script>#}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="bs-docs-header" tabindex="-1">
+        <div class="container">
+            <h1>设备管理</h1>
+            <p>支持新建设备</p>
+        </div>
+    </div>
+    <div class="container">
+        <form class="form-horizontal" method="post" action="{% url "devices:create" %}" autocomplete="off">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="inputDeviceFirm" class="col-sm-2 control-label">厂商:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputDeviceFirm" name="inputDeviceFirm" placeholder="请输入厂商">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDeviceModel" class="col-sm-2 control-label">设备型号:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputDeviceModel" name="inputDeviceModel" placeholder="请输入设备型号">
+                </div>
+                <div class="col-sm-4">
+                    <p style="color: red">为空则对所有型号有效</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDeviceVersion" class="col-sm-2 control-label">设备型号:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputDeviceVersion" name="inputDeviceVersion" placeholder="请输入操作系统版本">
+                </div>
+                <div class="col-sm-4">
+                    <p style="color: red">为空则对所有版本有效</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">OK</button>
+                    <button type="submit" class="btn btn-default">Back</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

@@ -10,4 +10,4 @@ def index(request):
 
 def create(request):
     # app_id=
-    return render(request, 'scripts/index.html')
+    return render(request, 'scripts/create.html')

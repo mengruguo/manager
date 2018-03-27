@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^apks/', include('apks.urls')),
-    # url(r'^devices', include('devices.urls')),
-    # url(r'^sdks', include('sdks.urls')),
-    # url('^scripts', include('scripts.urls')),
+    url(r'^devices', include('devices.urls')),
+    url(r'^sdks', include('sdks.urls')),
+    url('^scripts', include('scripts.urls')),
 ]
