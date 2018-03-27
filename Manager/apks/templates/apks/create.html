@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block style %}
+    <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    {#    <script>#}
+    {#        var submit = $("button[type=submit]");#}
+    {##}
+    {#    </script>#}
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="bs-docs-header" tabindex="-1">
+        <div class="container">
+            <h1>APP管理</h1>
+            <p>支持新增APP</p>
+        </div>
+    </div>
+    <div class="container">
+        <form class="form-horizontal" method="post" action="{% url "apks:create" %}" autocomplete="off">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="inputAppName" class="col-sm-2 control-label">应用名称:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputAppName" name="inputAppName" placeholder="请输入应用名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAppVersion" class="col-sm-2 control-label">应用版本:</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" rows="4" id="inputAppVersion" name="inputAppVersion"
+                              placeholder="请输入应用版本"></textarea>
+                </div>
+                <div class="col-sm-4">
+                    <p style="color: red">为空则对所有版本有效，多个版本使用英文逗号分割</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

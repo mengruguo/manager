@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <div id="content" class="bs-docs-header" tabindex="-1">
+        <div class="container">
+            <h1>用户退出</h1>
+            <p>用户退出登录成功。</p>
+        </div>
+    </div>
+    <div class="container">
+        <p>感谢您今天在本站花费了一些宝贵时间。</p>
+        <p><a href="{% url 'login' %}">重新登录</a></p>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+
+{% load staticfiles %}
+
+{% block style %}
+    <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="bs-docs-header" tabindex="-1">
+        <div class="container">
+            <h1>SDK版本管理</h1>
+            <p>新增、编辑SDK版本</p>
+        </div>
+    </div>
+{% endblock %}
