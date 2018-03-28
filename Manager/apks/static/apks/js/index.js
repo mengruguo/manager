@@ -34,7 +34,11 @@ $(document).ready(function () {
         "columnDefs": [ {
             "targets": 5,
             "data": null,
-            "defaultContent":"<button id='apps_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
+            "defaultContent":"<button id='apps_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
         } ],
     });
+    var appsEdit = $("#apps_edit");
+    appsEdit.click(function () {
+        alert("edit");
+    })
 });

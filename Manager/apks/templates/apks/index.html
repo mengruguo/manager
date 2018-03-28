@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 
 {% load staticfiles %}
+{% load versionfiles %}
 
 {% block style %}
     <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
@@ -9,7 +10,7 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
-    <script src="{% static 'apks/js/index.js' %}"></script>
+    <script src="{% version 'apks/js/index.js' %}"></script>
     <script>
         searchUrl = "{% url 'apks:search' %}";
     </script>

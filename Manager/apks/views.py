@@ -21,7 +21,7 @@ def save(request):
     app_name = request.POST.get('inputAppName')
     app_version = request.POST.get('inputAppVersion')
     if Apps.objects.count():
-        app_id = Apps.objects.last().app_id
+        app_id = Apps.objects.last().app_id + 1
     else:
         app_id = 10000
     with transaction.atomic():
@@ -34,5 +34,4 @@ def search(request):
     for i in Apps.objects.all():
         data.append(
             {'id': i.id, 'app_id': i.app_id, 'name': i.name, 'version': i.version, 'update_time': i.update_time})
-    # data = Apps.objects.all()
     return JsonResponse({'data': data})
