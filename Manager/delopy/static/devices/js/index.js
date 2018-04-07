@@ -26,7 +26,7 @@ $(document).ready(function () {
         }, {
             data: "manufacturer"
         }, {
-            data: "devices_type",
+            data: "model",
         }, {
             data: "version",
         }, {

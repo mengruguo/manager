@@ -9,7 +9,7 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
-    <script src="{% version 'devices/js/index.js' %}"></script>
+    <script src="{% static 'devices/js/index.js' %}"></script>
     <script>
         searchUrl = "{% url 'devices:search' %}";
     </script>
