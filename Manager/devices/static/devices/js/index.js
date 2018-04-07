@@ -1,17 +1,19 @@
 /**
  * Created by nubia on 2018/3/31.
  */
-var searchUrl;
+var searchUr2;
 $(document).ready(function () {
     var table = $("#devices_table");
     var dataTable = table.DataTable({
         serverSide: true,
         processing: true,
-        ajax: searchUrl,
+        ajax: searchUr2,
         language: {
             emptyTable: "设备列表为空",
             info: "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
             infoEmpty: "当前显示第 0 至 0 项，共 0 项。",
+            processing: "正在搜索中 ...",
+            search: "搜索：",
             lengthMenu: "每页 _MENU_ 项",
             paginate: {
                 first: "首页",

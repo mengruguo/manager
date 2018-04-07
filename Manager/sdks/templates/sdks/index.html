@@ -9,6 +9,10 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    <script src="{% static 'sdks/js/index.js' %}"></script>
+    <script>
+        searchUr3 = "{% url 'sdks:search' %}";
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -29,15 +33,6 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td width="20%">1</td>
-                <td>1.0.1</td>
-                <td>1.0.1</td>
-                <td>2018-3-26 19:51</td>
-                <td>编辑、删除按钮</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 {% endblock %}

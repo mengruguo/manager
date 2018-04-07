@@ -1,15 +1,15 @@
 /**
- * Created by nubia on 2018/3/31.
+ * Created by nubia on 2018/4/7.
  */
-var searchUr2;
+var searchUr3;
 $(document).ready(function () {
-    var table = $("#devices_table");
+    var table = $("#sdks_table");
     var dataTable = table.DataTable({
         serverSide: true,
         processing: true,
-        ajax: searchUr2,
+        ajax: searchUr3,
         language: {
-            emptyTable: "设备列表为空",
+            emptyTable: "APP列表为空",
             info: "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
             infoEmpty: "当前显示第 0 至 0 项，共 0 项。",
             processing: "正在搜索中 ...",
@@ -26,21 +26,19 @@ $(document).ready(function () {
             data: "id",
             searchable: false
         }, {
-            data: "manufacturer"
-        }, {
-            data: "model",
-        }, {
             data: "version",
+        }, {
+            data: "remark",
         }, {
             data: "update_time"
         }],
         "columnDefs": [ {
-            "targets": 5,
+            "targets": 4,
             "data": null,
-            "defaultContent":"<button id='devices_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
+            "defaultContent":"<button id='sdks_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
         } ],
     });
-    var appsEdit = $("#devices_edit");
+    var appsEdit = $("#sdks_edit");
     appsEdit.click(function () {
         alert("edit");
     })
