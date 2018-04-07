@@ -21,17 +21,19 @@
     <div class="container">
         <form class="form-horizontal" method="post" action="{% url "apks:save" %}" autocomplete="off">
             {% csrf_token %}
+            <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
                 <label for="inputAppName" class="col-sm-2 control-label">应用名称:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="inputAppName" name="inputAppName" placeholder="请输入应用名称" required>
+                    <input type="text" class="form-control" id="inputAppName" name="inputAppName"
+                           value="{% if data %}{{ data.name }}{% endif %}" placeholder="请输入应用名称" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputAppVersion" class="col-sm-2 control-label">应用版本:</label>
                 <div class="col-sm-6">
                     <textarea class="form-control" rows="4" id="inputAppVersion" name="inputAppVersion"
-                              placeholder="请输入应用版本"></textarea>
+                              value="{% if data %}{{ data.version }}{% endif %}" placeholder="请输入应用版本"></textarea>
                 </div>
                 <div class="col-sm-4">
                     <p style="color: red">为空则对所有版本有效，多个版本使用英文逗号分割</p>
@@ -40,6 +42,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" onclick=location="{% url "apks:index" %}">返回</button>
                 </div>
             </div>
         </form>
