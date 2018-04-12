@@ -39,7 +39,7 @@ def search(request):
     data = []
     for i in Devices.objects.all():
         data.append(
-            {'id': i.id, 'manufacturer': i.device_firm, 'device_model': i.device_model, 'version': i.version,
+            {'id': i.id, 'manufacturer': i.device_firm, 'model': i.device_model, 'version': i.version,
              'update_time': i.update_time})
     return JsonResponse({'data': data})
 
