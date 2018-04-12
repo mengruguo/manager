@@ -9,10 +9,6 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
-    {#    <script>#}
-    {#        var submit = $("button[type=submit]");#}
-    {##}
-    {#    </script>#}
 {% endblock %}
 
 {% block content %}
@@ -24,17 +20,18 @@
     </div>
 
     <div class="container">
-        <form class="form-horizontal" method="post" action="{% url "devices:create" %}" autocomplete="off">
+        <form class="form-horizontal" method="post" action="{% url "sdks:save" %}" autocomplete="off">
             {% csrf_token %}
             <div class="form-group">
                 <label for="inputDeviceFirm" class="col-sm-2 control-label">数据类型:</label>
                 <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceFirm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceFirm"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         js
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                         <li><a href="#">js</a></li>
+                        <li><a href="#">js</a></li>
                         <li><a href="#">lua</a></li>
                     </ul>
                 </div>
@@ -51,45 +48,47 @@
                 </div>
             </fieldset>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputDeviceState" class="col-sm-2 control-label">状态:</label>
                 <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceState"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         下线
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                         <li><a href="#">下线</a></li>
+                        <li><a href="#">下线</a></li>
                         <li><a href="#">上线</a></li>
                         <li><a href="#">定向测试</a></li>
                     </ul>
                 </div>
             </div>
-{#一行#}
-                <fieldset disabled>
-                    <div class="form-group">
-                        <label for="inputShengxTime" class="col-sm-2 control-label">生效时间:</label>
-                        <div class="col-sm-2">
-                            <input type="text" id="inputShengxTime" class="form-control" placeholder="">
-                        </div>
+            {#一行#}
+            <fieldset disabled>
+                <div class="form-group">
+                    <label for="inputShengxTime" class="col-sm-2 control-label">生效时间:</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="inputShengxTime" class="form-control" placeholder="">
                     </div>
+                </div>
                 <div class="form-group">
                     <label for="inputShixTime" class="col-sm-2 control-label">失效时间:</label>
                     <div class="col-sm-2">
                         <input type="text" id="inputShixTime" class="form-control" placeholder="">
                     </div>
                 </div>
-                </fieldset>
+            </fieldset>
 
             <div class="form-group">
                 <label for="inputTaskType" class="col-sm-2 control-label">任务类型:</label>
                 <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputTaskType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="inputTaskType"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         持续性
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                         <li><a href="#">持续性</a></li>
+                        <li><a href="#">持续性</a></li>
                         <li><a href="#">一次性</a></li>
                     </ul>
                 </div>
@@ -98,25 +97,26 @@
             <div class="form-group">
                 <label for="inputSysType" class="col-sm-2 control-label">系統类型:</label>
                 <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputSysType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="inputSysType"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         android
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                         <li><a href="#">android</a></li>
+                        <li><a href="#">android</a></li>
                         <li><a href="#">ios</a></li>
                     </ul>
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputScriptName" class="col-sm-2 control-label">名称:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptName" name="inputScriptName">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputScriptHot" class="col-sm-2 control-label">热度:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptHot" name="inputScriptHot">
@@ -125,39 +125,40 @@
 
             <div class="form-group">
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
-                    <input type="file" id="inputScriptFile">
+                <input type="file" id="inputScriptFile">
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
-                    <input type="file" id="inputKeyFile">
+                <input type="file" id="inputKeyFile">
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputScriptNumber" class="col-sm-2 control-label">脚本编号:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptNumber" name="inputScriptNumber">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputTaxon" class="col-sm-2 control-label">类名:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputTaxon" name="inputTaxon">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputFuncname" class="col-sm-2 control-label">函数名:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputFuncname" name="inputFuncname">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputIntervalTime" class="col-sm-2 control-label">间隔时间（分钟）:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIntervalTime" name="inputIntervalTime" placeholder="0">
+                    <input type="text" class="form-control" id="inputIntervalTime" name="inputIntervalTime"
+                           placeholder="0">
                 </div>
             </div>
 
@@ -175,50 +176,55 @@
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputIssuedCountType" class="col-sm-2 control-label">下发限制计数类型:</label>
                 <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputIssuedCountType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="inputIssuedCountType"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         根据下发计数
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                         <li><a href="#">根据下发计数</a></li>
+                        <li><a href="#">根据下发计数</a></li>
                         <li><a href="#">根据上报计数</a></li>
                     </ul>
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputIssuedLimit" class="col-sm-2 control-label">下发限量:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIssuedLimit" name="inputIssuedLimit" placeholder="-1">
+                    <input type="text" class="form-control" id="inputIssuedLimit" name="inputIssuedLimit"
+                           placeholder="-1">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="inputOneIssuedLimit" class="col-sm-2 control-label">单个用户下发限量:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputOneIssuedLimit" name="inputOneIssuedLimit" placeholder="-1">
+                    <input type="text" class="form-control" id="inputOneIssuedLimit" name="inputOneIssuedLimit"
+                           placeholder="-1">
                 </div>
             </div>
-{#一行#}
-             <div class="form-group">
+            {#一行#}
+            <div class="form-group">
                 <label for="reportSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="reportSuccessCount" name="reportSuccessCount" placeholder="-1">
+                    <input type="text" class="form-control" id="reportSuccessCount" name="reportSuccessCount"
+                           placeholder="-1">
                 </div>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label for="reportFailCount" class="col-sm-2 control-label">上报失败计数:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="reportFailCount" name="reportFailCount" placeholder="-1">
+                    <input type="text" class="form-control" id="reportFailCount" name="reportFailCount"
+                           placeholder="-1">
                 </div>
             </div>
 
-             <div class="form-group">
+            <div class="form-group">
                 <label for="orienteeringUuid" class="col-sm-2 control-label">定向UUID:</label>
-                    <input type="file" id="orienteeringUuid">
+                <input type="file" id="orienteeringUuid">
             </div>
 
             <div class="form-group">
@@ -239,84 +245,91 @@
                 <label for="issuedApp" class="col-sm-2 control-label">下发APP:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldApp" class="col-sm-2 control-label">屏蔽APP:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="issuedDevice" class="col-sm-2 control-label">下发设备:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldDevice" class="col-sm-2 control-label">屏蔽设备:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="issuedSdk" class="col-sm-2 control-label">下发SDK:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldSdk" class="col-sm-2 control-label">屏蔽SDK:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="issuedCountry" class="col-sm-2 control-label">下发国家:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldCountry" class="col-sm-2 control-label">屏蔽国家:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="issuedProvince" class="col-sm-2 control-label">下发省份:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldProvince" class="col-sm-2 control-label">屏蔽省份:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="issuedCity" class="col-sm-2 control-label">下发城市:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="shieldCity" class="col-sm-2 control-label">屏蔽城市:</label>
                 <select class="col-sm-2">
                     <option>Nothing Selected</option>
-                    </select>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-primary" onclick=location="{% url "scripts:index" %}">返回
+                    </button>
+                </div>
             </div>
         </form>
     </div>

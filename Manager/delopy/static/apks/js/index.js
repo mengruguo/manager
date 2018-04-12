@@ -1,9 +1,19 @@
 var searchUrl;
+var editUrl;
+var delUrl;
+
+function redraw(row, data) {
+    var op = $("td", row).eq(5).empty();
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        editUrl + "?t=" + data.id).text("编辑"));
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        delUrl + "?t=" + data.id).text("删除"));
+}
 $(document).ready(function () {
     var table = $("#apps_table");
     var dataTable = table.DataTable({
-        serverSide: true,
         processing: true,
+        sortable: true,
         ajax: searchUrl,
         language: {
             emptyTable: "APP列表为空",
@@ -30,15 +40,11 @@ $(document).ready(function () {
             data: "version",
         }, {
             data: "update_time"
+        }, {
+            data: null,
+            orderable: false,
+            searchable: false
         }],
-        "columnDefs": [ {
-            "targets": 5,
-            "data": null,
-            "defaultContent":"<button id='apps_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
-        } ],
+        createdRow: redraw,
     });
-    var appsEdit = $("#apps_edit");
-    appsEdit.click(function () {
-        alert("edit");
-    })
 });

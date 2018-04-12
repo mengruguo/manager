@@ -9,6 +9,10 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+{#    <script src="{% static 'scripts/js/index.js' %}"></script>#}
+{#    <script>#}
+{#        searchUrlscript = "{% url 'scripts:search' %}";#}
+{#    </script>#}
 {% endblock %}
 
 {% block content %}
@@ -40,26 +44,6 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td width="5%">1</td>
-                <td>js</td>
-                <td>android</td>
-                <td>脚本名称</td>
-                <td>http://www.baidu.com/</td>
-                <td>5</td>
-                <td>900082</td>
-                <td>根据上报计数</td>
-                <td>01</td>
-                <td>-1</td>
-                <td>2018-3-26 19:51</td>
-                <td>2018-3-26 19:51</td>
-                <td>上线</td>
-                <td>2018-3-26 19:51</td>
-                <td>30</td>
-                <td>下线、编辑、删除按钮</td>
-            </tr>
-            </tbody>
         </table>
     </div>
 {% endblock %}

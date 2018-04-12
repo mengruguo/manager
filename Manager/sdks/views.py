@@ -2,8 +2,6 @@
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-# Create your views here.
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.utils import timezone
@@ -16,16 +14,21 @@ def index(request):
 
 
 def create(request):
-    sdk_name = request.POST.get('inputSdkName')
-    sdk_remark = request.POST.get('inputSdkRemark')
     return render(request, 'sdks/create.html')
 
 
 def save(request):
+    sdks_id = request.POST.get('id')
     sdk_version = request.POST.get('inputSdkName')
     sdk_remark = request.POST.get('inputSdkRemark')
-    with transaction.atomic():
-        Sdks.objects.create(name=sdk_version, version=sdk_remark, update_time=timezone.now())
+    if sdks_id:
+        sdks = Sdks.objects.get(id=sdks_id)
+        sdks.version = sdk_version
+        sdks.remark = sdk_remark
+        sdks.save()
+    else:
+        with transaction.atomic():
+            Sdks.objects.create(version=sdk_version, remark=sdk_remark, update_time=timezone.now())
     return HttpResponseRedirect(reverse('sdks:index'))
 
 
@@ -35,3 +38,21 @@ def search(request):
         data.append(
             {'id': i.id, 'version': i.version, 'remark': i.remark, 'update_time': i.update_time})
     return JsonResponse({'data': data})
+
+
+def edit(request):
+    try:
+        sdk = Sdks.objects.get(id=request.GET.get('t', ''))
+    except Exception as e:
+        print e
+    else:
+        data = {'id': sdk.id, 'version': sdk.version, 'remark': sdk.remark}
+    return render(request, 'sdks/create.html', {'data': data})
+
+
+def delete(request):
+    try:
+        Sdks.objects.get(id=request.GET.get('t')).delete()
+    except Exception as e:
+        print e
+    return render(request, 'sdks/index.html')

@@ -21,11 +21,12 @@
     <div class="container">
         <form class="form-horizontal" method="post" action="{% url "devices:save" %}" autocomplete="off">
             {% csrf_token %}
+            <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
                 <label for="inputDeviceFirm" class="col-sm-2 control-label">厂商:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputDeviceFirm" name="inputDeviceFirm"
-                           placeholder="请输入厂商" required>
+                           value="{% if data %}{{ data.device_firm }}{% endif %}" placeholder="请输入厂商" required>
                 </div>
             </div>
 
@@ -33,7 +34,7 @@
                 <label for="inputDeviceModel" class="col-sm-2 control-label">设备型号:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputDeviceModel" name="inputDeviceModel"
-                           placeholder="请输入设备型号">
+                           value="{% if data %}{{ data.device_model }}{% endif %}" placeholder="请输入设备型号">
                 </div>
                 <div class="col-sm-4">
                     <p style="color: red">为空则对所有型号有效</p>
@@ -44,7 +45,7 @@
                 <label for="inputDeviceVersion" class="col-sm-2 control-label">设备型号:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputDeviceVersion" name="inputDeviceVersion"
-                           placeholder="请输入操作系统版本">
+                           value="{% if data %}{{ data.version }}{% endif %}" placeholder="请输入操作系统版本">
                 </div>
                 <div class="col-sm-4">
                     <p style="color: red">为空则对所有版本有效</p>
@@ -54,7 +55,8 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary">确定</button>
-                    <button type="button" class="btn btn-default" onclick="{% url "devices:index" %}">返回</button>
+                    <button type="button" class="btn btn-primary" onclick=location="{% url "devices:index" %}">返回
+                    </button>
                 </div>
             </div>
         </form>

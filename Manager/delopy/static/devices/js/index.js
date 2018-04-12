@@ -1,13 +1,23 @@
 /**
  * Created by nubia on 2018/3/31.
  */
-var searchUr2;
+var searchUrld;
+var editUrld;
+var delUrld;
+
+function redraw(row, data) {
+    var op = $("td", row).eq(5).empty();
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        editUrld + "?t=" + data.id).text("编辑"));
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        delUrld + "?t=" + data.id).text("删除"));
+}
 $(document).ready(function () {
     var table = $("#devices_table");
     var dataTable = table.DataTable({
-        serverSide: true,
         processing: true,
-        ajax: searchUr2,
+        sortable: true,
+        ajax: searchUrld,
         language: {
             emptyTable: "设备列表为空",
             info: "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
@@ -28,20 +38,16 @@ $(document).ready(function () {
         }, {
             data: "manufacturer"
         }, {
-            data: "model",
+            data: "model", defaultContent: "",
         }, {
-            data: "version",
+            data: "version", defaultContent: "",
         }, {
             data: "update_time"
+        }, {
+            data: null,
+            orderable: false,
+            searchable: false
         }],
-        "columnDefs": [ {
-            "targets": 5,
-            "data": null,
-            "defaultContent":"<button id='devices_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
-        } ],
+        createdRow: redraw,
     });
-    var appsEdit = $("#devices_edit");
-    appsEdit.click(function () {
-        alert("edit");
-    })
 });

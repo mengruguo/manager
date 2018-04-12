@@ -55,5 +55,8 @@ def edit(request):
 
 
 def delete(request):
-    Apps.objects.get(id=request.GET.get('t')).delete()
+    try:
+        Apps.objects.get(id=request.GET.get('t')).delete()
+    except Exception as e:
+        print e
     return render(request, 'apks/index.html')

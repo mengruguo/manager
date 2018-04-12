@@ -1,15 +1,25 @@
 /**
  * Created by nubia on 2018/4/7.
  */
-var searchUr3;
+var searchUrls;
+var editUrls;
+var delUrls;
+
+function redraw(row, data) {
+    var op = $("td", row).eq(4).empty();
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        editUrls + "?t=" + data.id).text("编辑"));
+    op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        delUrls + "?t=" + data.id).text("删除"));
+}
 $(document).ready(function () {
     var table = $("#sdks_table");
     var dataTable = table.DataTable({
-        serverSide: true,
         processing: true,
-        ajax: searchUr3,
+        sortable: true,
+        ajax: searchUrls,
         language: {
-            emptyTable: "APP列表为空",
+            emptyTable: "SDK列表为空",
             info: "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
             infoEmpty: "当前显示第 0 至 0 项，共 0 项。",
             processing: "正在搜索中 ...",
@@ -31,15 +41,11 @@ $(document).ready(function () {
             data: "remark",
         }, {
             data: "update_time"
+        }, {
+            data: null,
+            orderable: false,
+            searchable: false
         }],
-        "columnDefs": [ {
-            "targets": 4,
-            "data": null,
-            "defaultContent":"<button id='sdks_edit' type='btn btn-primary btn-sx' style='margin-right: 5px'>编辑</button>"+"<button id='apps_delete' type='btn btn-primary btn-sx' style='margin-right: 5px'>删除</button>"
-        } ],
+        createdRow: redraw,
     });
-    var appsEdit = $("#sdks_edit");
-    appsEdit.click(function () {
-        alert("edit");
-    })
 });

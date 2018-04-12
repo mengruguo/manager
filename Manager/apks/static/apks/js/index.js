@@ -5,7 +5,7 @@ var delUrl;
 function redraw(row, data) {
     var op = $("td", row).eq(5).empty();
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
-        editUrl + "?t=" + data.id).attr("target", "_blank").text("编辑"));
+        editUrl + "?t=" + data.id).text("编辑"));
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
         delUrl + "?t=" + data.id).text("删除"));
 }

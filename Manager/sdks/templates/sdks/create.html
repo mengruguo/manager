@@ -19,12 +19,14 @@
         </div>
     </div>
     <div class="container">
-        <form class="form-horizontal" method="post" action="{% url "sdks:create" %}" autocomplete="off">
+        <form class="form-horizontal" method="post" action="{% url "sdks:save" %}" autocomplete="off">
             {% csrf_token %}
+            <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
                 <label for="inputSdkName" class="col-sm-2 control-label">sdk版本:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="inputSdkName" name="inputSdkName" placeholder="请输入sdk版本"
+                    <input type="text" class="form-control" id="inputSdkName" name="inputSdkName"
+                           value="{% if data %}{{ data.version }}{% endif %}" placeholder="请输入sdk版本"
                            required>
                 </div>
             </div>
@@ -32,13 +34,13 @@
                 <label for="inputSdkRemark" class="col-sm-2 control-label">备注:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputSdkRemark" name="inputSdkRemark"
-                           placeholder="请输入备注信息">
+                           value="{% if data %}{{ data.remark }}{% endif %}" placeholder="请输入备注信息">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary">确定</button>
-                    <button type="button" class="btn btn-default" onclick="{% url "sdks:index" %}">返回</button>
+                    <button type="button" class="btn btn-primary" onclick=location="{% url "sdks:index" %}">返回</button>
                 </div>
             </div>
         </form>

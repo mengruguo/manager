@@ -11,7 +11,9 @@
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
     <script src="{% static 'sdks/js/index.js' %}"></script>
     <script>
-        searchUr3 = "{% url 'sdks:search' %}";
+        searchUrls = "{% url 'sdks:search' %}";
+        editUrls = "{% url 'sdks:edit' %}";
+        delUrls = "{% url 'sdks:delete' %}";
     </script>
 {% endblock %}
 
