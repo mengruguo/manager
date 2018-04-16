@@ -37,10 +37,12 @@ def search(request):
     for i in Sdks.objects.all():
         data.append(
             {'id': i.id, 'version': i.version, 'remark': i.remark, 'update_time': i.update_time})
+    print data
     return JsonResponse({'data': data})
 
 
 def edit(request):
+    data = {}
     try:
         sdk = Sdks.objects.get(id=request.GET.get('t', ''))
     except Exception as e:
