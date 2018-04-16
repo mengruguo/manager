@@ -20,7 +20,7 @@
     </div>
 
     <div class="container">
-        <form class="form-horizontal" method="post" action="{% url "sdks:save" %}" autocomplete="off">
+        <form class="form-horizontal" method="post" action="{% url "scripts:save" %}" autocomplete="off">
             {% csrf_token %}
             <div class="form-group">
                 <label for="inputDeviceFirm" class="col-sm-2 control-label">数据类型:</label>
@@ -112,7 +112,7 @@
             <div class="form-group">
                 <label for="inputScriptName" class="col-sm-2 control-label">名称:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputScriptName" name="inputScriptName">
+                    <input type="text" class="form-control" id="inputScriptName" name="inputScriptName" required>
                 </div>
             </div>
 
@@ -125,12 +125,12 @@
 
             <div class="form-group">
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
-                <input type="file" id="inputScriptFile">
+                <input type="file" id="inputScriptFile" required>
             </div>
 
             <div class="form-group">
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
-                <input type="file" id="inputKeyFile">
+                <input type="file" id="inputKeyFile" required>
             </div>
 
             <div class="form-group">
@@ -158,21 +158,21 @@
                 <label for="inputIntervalTime" class="col-sm-2 control-label">间隔时间（分钟）:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputIntervalTime" name="inputIntervalTime"
-                           placeholder="0">
+                           placeholder="0" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="inputIssuedTime" class="col-sm-2 control-label">下发延时:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime">
+                    <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime">
+                    <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime" required>
                 </div>
             </div>
 
@@ -195,7 +195,7 @@
                 <label for="inputIssuedLimit" class="col-sm-2 control-label">下发限量:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputIssuedLimit" name="inputIssuedLimit"
-                           placeholder="-1">
+                           placeholder="-1" required>
                 </div>
             </div>
 
@@ -203,7 +203,7 @@
                 <label for="inputOneIssuedLimit" class="col-sm-2 control-label">单个用户下发限量:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputOneIssuedLimit" name="inputOneIssuedLimit"
-                           placeholder="-1">
+                           placeholder="-1" required>
                 </div>
             </div>
             {#一行#}
@@ -211,14 +211,14 @@
                 <label for="reportSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="reportSuccessCount" name="reportSuccessCount"
-                           placeholder="-1">
+                           placeholder="-1" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="reportFailCount" class="col-sm-2 control-label">上报失败计数:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="reportFailCount" name="reportFailCount"
-                           placeholder="-1">
+                           placeholder="-1" required>
                 </div>
             </div>
 

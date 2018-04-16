@@ -9,10 +9,14 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
-{#    <script src="{% static 'scripts/js/index.js' %}"></script>#}
-{#    <script>#}
-{#        searchUrlscript = "{% url 'scripts:search' %}";#}
-{#    </script>#}
+    <script src="{% static 'scripts/js/index.js' %}"></script>
+    <script>
+        searchUrlsc = "{% url 'scripts:search' %}";
+        allIssuedUrlsc = "{% url 'scripts:allissued' %}";
+        editUrlsc = "{% url 'scripts:edit' %}";
+        delUrlsc = "{% url 'scripts:delete' %}";
+        issuedUrlsc = "{% url 'scripts:issued' %}";
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -23,7 +27,7 @@
         </div>
     </div>
     <div class="container">
-        <table id="table" class="table table-striped table-bordered table-hover" width="100%">
+        <table id="scripts_table" class="table table-striped table-bordered table-hover" width="100%">
             <thead>
             <tr>
                 <th width="5%">ID</th>
