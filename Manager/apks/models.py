@@ -11,6 +11,7 @@ class Apps(models.Model):
     name = models.CharField(verbose_name=u'APP名称', max_length=50)
     version = models.TextField(verbose_name=u'APP版本', null=True)
     update_time = models.DateTimeField(verbose_name=u'更新时间', auto_now_add=True)
+    config_time = models.IntegerField(verbose_name=u'配置时间', default=5)
     app = models.ManyToManyField(Scripts, verbose_name=u'app', through='AppChoice')
 
     def __unicode__(self):

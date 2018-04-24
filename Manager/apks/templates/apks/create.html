@@ -40,6 +40,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="inputAppVersion" class="col-sm-2 control-label">配置时间（单位：分钟）:</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" id="inputAppConfig" name="inputAppConfig"
+                              value="{% if data %}{{ data.config_time }}{% endif %}" placeholder="5">
+                </div>
+            </div>
+            <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-primary">提交</button>
                     <button type="button" class="btn btn-primary" onclick=location="{% url "apks:index" %}">返回</button>

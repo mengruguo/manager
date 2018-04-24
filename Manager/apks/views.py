@@ -21,10 +21,12 @@ def save(request):
     apks_id = request.POST.get('id')
     app_name = request.POST.get('inputAppName')
     app_version = request.POST.get('inputAppVersion')
+    app_config = request.POST.get('inputAppConfig')
     if apks_id:
         apk = Apps.objects.get(id=apks_id)
         apk.name = app_name
         apk.version = app_version
+        apk.config_time = app_config
         apk.save()
     else:
         if Apps.objects.count():
@@ -32,7 +34,8 @@ def save(request):
         else:
             app_id = 10000
         with transaction.atomic():
-            Apps.objects.create(app_id=app_id, name=app_name, version=app_version, update_time=timezone.now())
+            Apps.objects.create(app_id=app_id, name=app_name, version=app_version, update_time=timezone.now(),
+                                config_time=app_config if app_config else 5)
     return HttpResponseRedirect(reverse('apks:index'))
 
 
@@ -50,7 +53,7 @@ def edit(request):
     except Exception as e:
         print e
     else:
-        data = {'id': app.id, 'name': app.name, 'version': app.version}
+        data = {'id': app.id, 'name': app.name, 'version': app.version, 'config_time': app.config_time}
     return render(request, 'apks/create.html', {'data': data})
 
 
