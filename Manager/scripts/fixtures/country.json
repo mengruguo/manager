@@ -1,0 +1,729 @@
+[
+  {
+    "model": "scripts.country",
+    "pk": 1,
+    "fields": {
+      "name": "中国"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 1,
+    "fields": {
+      "country": 1,
+      "name": "北京市"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 2,
+    "fields": {
+      "country": 1,
+      "name": "广东省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 3,
+    "fields": {
+      "country": 1,
+      "name": "山东省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 4,
+    "fields": {
+      "country": 1,
+      "name": "江苏省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 5,
+    "fields": {
+      "country": 1,
+      "name": "河南省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 6,
+    "fields": {
+      "country": 1,
+      "name": "上海市"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 7,
+    "fields": {
+      "country": 1,
+      "name": "河北省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 8,
+    "fields": {
+      "country": 1,
+      "name": "浙江省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 9,
+    "fields": {
+      "country": 1,
+      "name": "香港特别行政区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 10,
+    "fields": {
+      "country": 1,
+      "name": "陕西省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 11,
+    "fields": {
+      "country": 1,
+      "name": "湖南省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 12,
+    "fields": {
+      "country": 1,
+      "name": "重庆市"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 13,
+    "fields": {
+      "country": 1,
+      "name": "福建省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 14,
+    "fields": {
+      "country": 1,
+      "name": "天津市"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 15,
+    "fields": {
+      "country": 1,
+      "name": "云南省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 16,
+    "fields": {
+      "country": 1,
+      "name": "四川省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 17,
+    "fields": {
+      "country": 1,
+      "name": "广西壮族自治区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 18,
+    "fields": {
+      "country": 1,
+      "name": "安徽省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 19,
+    "fields": {
+      "country": 1,
+      "name": "海南省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 20,
+    "fields": {
+      "country": 1,
+      "name": "江西省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 21,
+    "fields": {
+      "country": 1,
+      "name": "湖北省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 22,
+    "fields": {
+      "country": 1,
+      "name": "山西省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 23,
+    "fields": {
+      "country": 1,
+      "name": "辽宁省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 24,
+    "fields": {
+      "country": 1,
+      "name": "台湾省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 25,
+    "fields": {
+      "country": 1,
+      "name": "黑龙江"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 26,
+    "fields": {
+      "country": 1,
+      "name": "内蒙古自治区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 27,
+    "fields": {
+      "country": 1,
+      "name": "澳门特别行政区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 28,
+    "fields": {
+      "country": 1,
+      "name": "贵州省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 29,
+    "fields": {
+      "country": 1,
+      "name": "甘肃省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 30,
+    "fields": {
+      "country": 1,
+      "name": "青海省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 31,
+    "fields": {
+      "country": 1,
+      "name": "新疆维吾尔自治区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 32,
+    "fields": {
+      "country": 1,
+      "name": "西藏区"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 33,
+    "fields": {
+      "country": 1,
+      "name": "吉林省"
+    }
+  },
+  {
+    "model": "scripts.province",
+    "pk": 34,
+    "fields": {
+      "country": 1,
+      "name": "宁夏回族自治区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 1,
+    "fields": {
+      "province": 1,
+      "name": "朝阳区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 2,
+    "fields": {
+      "province": 1,
+      "name": "海淀区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 3,
+    "fields": {
+      "province": 1,
+      "name": "通州区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 4,
+    "fields": {
+      "province": 1,
+      "name": "房山区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 5,
+    "fields": {
+      "province": 1,
+      "name": "丰台区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 6,
+    "fields": {
+      "province": 1,
+      "name": "昌平区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 7,
+    "fields": {
+      "province": 1,
+      "name": "大兴区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 8,
+    "fields": {
+      "province": 1,
+      "name": "顺义区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 9,
+    "fields": {
+      "province": 1,
+      "name": "西城区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 10,
+    "fields": {
+      "province": 1,
+      "name": "延庆县"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 11,
+    "fields": {
+      "province": 1,
+      "name": "石景山区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 12,
+    "fields": {
+      "province": 1,
+      "name": "宣武区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 13,
+    "fields": {
+      "province": 1,
+      "name": "怀柔区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 14,
+    "fields": {
+      "province": 1,
+      "name": "崇文区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 15,
+    "fields": {
+      "province": 1,
+      "name": "密云县"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 16,
+    "fields": {
+      "province": 1,
+      "name": "东城区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 17,
+    "fields": {
+      "province": 1,
+      "name": "门头沟区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 18,
+    "fields": {
+      "province": 1,
+      "name": "平谷区"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 19,
+    "fields": {
+      "province": 2,
+      "name": "东莞市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 20,
+    "fields": {
+      "province": 2,
+      "name": "广州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 21,
+    "fields": {
+      "province": 2,
+      "name": "中山市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 22,
+    "fields": {
+      "province": 2,
+      "name": "深圳市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 23,
+    "fields": {
+      "province": 2,
+      "name": "惠州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 24,
+    "fields": {
+      "province": 2,
+      "name": "江门市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 25,
+    "fields": {
+      "province": 2,
+      "name": "珠海市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 26,
+    "fields": {
+      "province": 2,
+      "name": "汕头市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 27,
+    "fields": {
+      "province": 2,
+      "name": "佛山市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 28,
+    "fields": {
+      "province": 2,
+      "name": "湛江市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 29,
+    "fields": {
+      "province": 2,
+      "name": "河源市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 30,
+    "fields": {
+      "province": 2,
+      "name": "肇庆市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 31,
+    "fields": {
+      "province": 2,
+      "name": "潮州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 32,
+    "fields": {
+      "province": 2,
+      "name": "清远市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 33,
+    "fields": {
+      "province": 2,
+      "name": "韶关市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 34,
+    "fields": {
+      "province": 2,
+      "name": "揭阳市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 35,
+    "fields": {
+      "province": 2,
+      "name": "阳江市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 36,
+    "fields": {
+      "province": 2,
+      "name": "云浮市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 37,
+    "fields": {
+      "province": 2,
+      "name": "茂名市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 38,
+    "fields": {
+      "province": 2,
+      "name": "梅州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 39,
+    "fields": {
+      "province": 2,
+      "name": "汕尾市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 40,
+    "fields": {
+      "province": 3,
+      "name": "济南市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 41,
+    "fields": {
+      "province": 3,
+      "name": "青岛市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 42,
+    "fields": {
+      "province": 3,
+      "name": "临沂市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 43,
+    "fields": {
+      "province": 3,
+      "name": "济宁市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 44,
+    "fields": {
+      "province": 3,
+      "name": "菏泽市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 45,
+    "fields": {
+      "province": 3,
+      "name": "烟台市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 46,
+    "fields": {
+      "province": 3,
+      "name": "泰安市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 47,
+    "fields": {
+      "province": 3,
+      "name": "淄博市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 48,
+    "fields": {
+      "province": 3,
+      "name": "潍坊市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 49,
+    "fields": {
+      "province": 3,
+      "name": "日照市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 50,
+    "fields": {
+      "province": 3,
+      "name": "威海市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 51,
+    "fields": {
+      "province": 3,
+      "name": "滨州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 52,
+    "fields": {
+      "province": 3,
+      "name": "东营市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 53,
+    "fields": {
+      "province": 3,
+      "name": "聊城市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 54,
+    "fields": {
+      "province": 3,
+      "name": "德州市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 55,
+    "fields": {
+      "province": 3,
+      "name": "莱芜市"
+    }
+  },
+  {
+    "model": "scripts.city",
+    "pk": 56,
+    "fields": {
+      "province": 3,
+      "name": "枣庄市"
+    }
+  }
+]

@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 
 {% load staticfiles %}
+{% load versionfiles %}
 
 {% block style %}
     <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
@@ -9,13 +10,9 @@
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
-    <script src="{% static 'scripts/js/index.js' %}"></script>
+    <script src="{% version 'scripts/js/index.js' %}"></script>
     <script>
-        searchUrlsc = "{% url 'scripts:search' %}";
-        allIssuedUrlsc = "{% url 'scripts:allissued' %}";
-        editUrlsc = "{% url 'scripts:edit' %}";
-        delUrlsc = "{% url 'scripts:delete' %}";
-        issuedUrlsc = "{% url 'scripts:issued' %}";
+        searchUrl = "{% url 'scripts:search' %}";
     </script>
 {% endblock %}
 
@@ -27,27 +24,22 @@
         </div>
     </div>
     <div class="container">
-        <table id="scripts_table" class="table table-striped table-bordered table-hover" width="100%">
+        <table id="script_table" class="table table-striped table-bordered table-hover" width="100%">
             <thead>
             <tr>
-                <th width="5%">ID</th>
+                <th>ID</th>
                 <th>数据类型</th>
                 <th>系统</th>
                 <th>脚本名称</th>
                 <th>URL地址</th>
-                <th>单个用户下发限量</th>
-                <th>appId</th>
-                <th>下发计数类型</th>
-                <th>脚本编号</th>
-                <th>日下发量</th>
-                <th>生效时间</th>
-                <th>失效时间</th>
-                <th>状态</th>
-                <th>更新时间</th>
-                <th>热度</th>
+                <th>单用户下发限量</th>
+                <th>APPID</th>
+                {#                <th>应用版本</th>#}
+                {#                <th>更新时间</th>#}
                 <th>操作</th>
             </tr>
             </thead>
         </table>
     </div>
 {% endblock %}
+

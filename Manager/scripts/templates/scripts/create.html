@@ -4,11 +4,60 @@
 
 {% block style %}
     <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap-fileinput.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'bootstrap/js/jquery-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-fileinput.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-fileinput.zh.js' %}"></script>
+    <script>
+        function toIssuedCity() {
+            var _issuedProvince = document.getElementById("issuedProvince");
+            var _issuedCity = $("#issuedCity");
+            var issuedProvinceValue = _issuedProvince.value;
+            var data = eval("{{ city|escapejs }}".replace(/u'/g, "'"));
+            var citySelect = '<option value="">--请选择城市---</option>';
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].province == issuedProvinceValue) {
+                    citySelect += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+            }
+            _issuedCity.html(citySelect);
+        }
+        function toShieldCity() {
+            var _shieldProvince = document.getElementById("shieldProvince");
+            var _shieldCity = $("#shieldCity");
+            var shieldProvinceValue = _shieldProvince.value;
+            var data = eval("{{ city|escapejs }}".replace(/u'/g, "'"));
+            var citySelect = '<option value="">--请选择城市---</option>';
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].province == shieldProvinceValue) {
+                    citySelect += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+            }
+            _shieldCity.html(citySelect);
+        }
+
+        $("#inputScriptFile").fileinput({
+            language: "zh",
+            allowedFileExtensions: ['xml'],
+            showUpload: true,
+            showCaption: true,
+            browseClass: "btn btn-primary",
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
+        }).on('filepreupload', function (event, data, previewId, index) {     //上传中
+            var form = data.form, files = data.files, extra = data.extra,
+                    response = data.response, reader = data.reader;
+            console.log('文件正在上传');
+        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功
+            console.log('文件上传成功！' + data.id);
+
+        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败
+            console.log('文件上传失败！' + data.id);
+        })
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -20,309 +69,320 @@
     </div>
 
     <div class="container">
-        <form class="form-horizontal" method="post" action="{% url "scripts:save" %}" autocomplete="off">
+        <form class="form-horizontal" method="post" action="{% url "scripts:save" %}" autocomplete="off"
+              enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="inputDeviceFirm" class="col-sm-2 control-label">数据类型:</label>
-                <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceFirm"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        js
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">js</a></li>
-                        <li><a href="#">lua</a></li>
-                    </ul>
+                <label for="dataType" class="col-sm-2 control-label">数据类型:</label>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="dataType">
+                        <option value="js">Js</option>
+                        <option value="lua">Lua</option>
+                    </select>
                 </div>
             </div>
-
-            <fieldset disabled>
-                <div class="form-group">
-                    <label for="inputTimeLimit" class="col-sm-2 control-label">时段限制:</label>
-                    <div class="col-sm-2">
-                        <input type="text" id="inputTimeLimit" class="form-control">
-                        <button type="button" class="btn btn-default btn-lg active">设置时段</button>
-                    </div>
-
-                </div>
-            </fieldset>
-
             <div class="form-group">
-                <label for="inputDeviceState" class="col-sm-2 control-label">状态:</label>
-                <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputDeviceState"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        下线
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">下线</a></li>
-                        <li><a href="#">上线</a></li>
-                        <li><a href="#">定向测试</a></li>
-                    </ul>
+                <label for="inputTimeLimit" class="col-sm-2 control-label">时段限制:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="inputTimeLimit" name="inputTimeLimit"
+                           value="{% if data %}{{ data.time_slot_limit }}{% endif %}" placeholder="请输入时段(逗号分割)">
                 </div>
             </div>
-            {#一行#}
-            <fieldset disabled>
+            <div class="form-group">
+                <label for="scriptState" class="col-sm-2 control-label">状态:</label>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="scriptState">
+                        <option value=0>上线</option>
+                        <option value=1>下线</option>
+                        <option value=2>定向测试</option>
+                    </select>
+                </div>
+            </div>
+            <fieldset>
                 <div class="form-group">
-                    <label for="inputShengxTime" class="col-sm-2 control-label">生效时间:</label>
+                    <label for="effectiveTime" class="col-sm-2 control-label">生效时间:</label>
                     <div class="col-sm-2">
-                        <input type="text" id="inputShengxTime" class="form-control" placeholder="">
+                        <input type="date" class="form-control" id="effectiveTime" name="effectiveTime"
+                               value="{% if data %}{{ data.effective_time }}{% endif %}" placeholder="请选择时间">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputShixTime" class="col-sm-2 control-label">失效时间:</label>
+                    <label for="invalidTime" class="col-sm-2 control-label">失效时间:</label>
                     <div class="col-sm-2">
-                        <input type="text" id="inputShixTime" class="form-control" placeholder="">
+                        <input type="date" class="form-control" id="invalidTime" name="invalidTime"
+                               value="{% if data %}{{ data.invalid_time }}{% endif %}" placeholder="请选择时间">
                     </div>
                 </div>
             </fieldset>
-
             <div class="form-group">
-                <label for="inputTaskType" class="col-sm-2 control-label">任务类型:</label>
-                <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputTaskType"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        持续性
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">持续性</a></li>
-                        <li><a href="#">一次性</a></li>
-                    </ul>
+                <label for="taskType" class="col-sm-2 control-label">任务类型:</label>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="taskType">
+                        <option value=0>持续性</option>
+                        <option value=1>一次性</option>
+                    </select>
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputSysType" class="col-sm-2 control-label">系統类型:</label>
-                <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputSysType"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        android
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">android</a></li>
-                        <li><a href="#">ios</a></li>
-                    </ul>
+                <label for="osType" class="col-sm-2 control-label">系统类型:</label>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="osType">
+                        <option value=0>Android</option>
+                        <option value=1>Ios</option>
+                    </select>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="inputScriptName" class="col-sm-2 control-label">名称:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputScriptName" name="inputScriptName" required>
+                    <input type="text" class="form-control" id="inputScriptName" name="inputScriptName"
+                           value="{% if data %}{{ data.name }}{% endif %}" >
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="inputScriptHot" class="col-sm-2 control-label">热度:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptHot" name="inputScriptHot">
                 </div>
             </div>
-
+            <div class="form-group">
+                <label for="inputUrl" class="col-sm-2 control-label">URL地址:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="inputUrl" name="inputUrl">
+                </div>
+            </div>
             <div class="form-group">
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
-                <input type="file" id="inputScriptFile" required>
+                <div class="col-sm-4">
+                    <input type="file" class="file" id="inputScriptFile" name="inputScriptFile" multiple >
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
-                <input type="file" id="inputKeyFile" required>
+                <div class="col-sm-4">
+                    <input type="file" class="file" id="inputKeyFile" name="inputKeyFile" >
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="inputScriptNumber" class="col-sm-2 control-label">脚本编号:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputScriptNumber" name="inputScriptNumber">
+                    <input type="text" class="form-control" id="inputScriptNumber" name="inputScriptNumber"
+                           value="{% if data %}{{ data.number }}{% endif %}" >
+                </div>
+                <div class="col-sm-4">
+                    <p style="color: red">同一类脚本填写的编号一样，独立的默认为空</p>
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputTaxon" class="col-sm-2 control-label">类名:</label>
+                <label for="inputClassName" class="col-sm-2 control-label">类名:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputTaxon" name="inputTaxon">
+                    <input type="text" class="form-control" id="inputClassName" name="inputClassName"
+                           value="{% if data %}{{ data.class_name }}{% endif %}">
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputFuncname" class="col-sm-2 control-label">函数名:</label>
+                <label for="inputMethodName" class="col-sm-2 control-label">函数名:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputFuncname" name="inputFuncname">
+                    <input type="text" class="form-control" id="inputMethodName" name="inputMethodName"
+                           value="{% if data %}{{ data.method_name }}{% endif %}">
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputIntervalTime" class="col-sm-2 control-label">间隔时间（分钟）:</label>
+                <label for="inputThrottle" class="col-sm-2 control-label">间隔时间（分钟）:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIntervalTime" name="inputIntervalTime"
-                           placeholder="0" required>
+                    <input type="text" class="form-control" id="inputThrottle" name="inputThrottle"
+                           value="{% if data %}{{ data.throttle }}{% endif %}"
+                           placeholder="0" >
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputIssuedTime" class="col-sm-2 control-label">下发延时:</label>
+                <label for="inputIssuedTime" class="col-sm-2 control-label">下发延时(小时):</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime" required>
+                    <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime"
+                           value="{% if data %}{{ data.issued_delay }}{% endif %}" >
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时:</label>
+                <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时（秒）:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime" required>
+                    <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime"
+                           value="{% if data %}{{ data.exec_issued }}{% endif %}" >
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputIssuedCountType" class="col-sm-2 control-label">下发限制计数类型:</label>
-                <div class="dropdown col-sm-6">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="inputIssuedCountType"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        根据下发计数
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="#">根据下发计数</a></li>
-                        <li><a href="#">根据上报计数</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="inputIssuedLimit" class="col-sm-2 control-label">下发限量:</label>
+                <label for="issuedLimitType" class="col-sm-2 control-label">下发限制计数类型:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputIssuedLimit" name="inputIssuedLimit"
-                           placeholder="-1" required>
+                    <select class="form-control input-sm" name="issuedLimitType">
+                        <option value=0>根据下发计数</option>
+                        <option value=1>根据上报计数</option>
+                    </select>
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="inputOneIssuedLimit" class="col-sm-2 control-label">单个用户下发限量:</label>
+                <label for="inputIssuedCount" class="col-sm-2 control-label">下发限量:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputOneIssuedLimit" name="inputOneIssuedLimit"
-                           placeholder="-1" required>
+                    <input type="number" class="form-control" id="inputIssuedCount" name="inputIssuedCount"
+                           value="{% if data %}{{ data.issued_count }}{% endif %}" placeholder="-1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputSingleIssuedCount" class="col-sm-2 control-label">单个用户下发限量:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="inputSingleIssuedCount" name="inputSingleIssuedCount"
+                           value="{% if data %}{{ data.single_issued_count }}{% endif %}" placeholder="-1">
                 </div>
             </div>
             {#一行#}
             <div class="form-group">
-                <label for="reportSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
+                <label for="uploadSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="reportSuccessCount" name="reportSuccessCount"
-                           placeholder="-1" required>
+                    <input type="text" class="form-control" id="uploadSuccessCount" name="uploadSuccessCount"
+                           value="{% if data %}{{ data.upload_success }}{% endif %}" placeholder="-1">
                 </div>
             </div>
             <div class="form-group">
-                <label for="reportFailCount" class="col-sm-2 control-label">上报失败计数:</label>
+                <label for="uploadFailCount" class="col-sm-2 control-label">上报失败计数:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="reportFailCount" name="reportFailCount"
-                           placeholder="-1" required>
+                    <input type="text" class="form-control" id="uploadFailCount" name="uploadFailCount"
+                           value="{% if data %}{{ data.upload_fail }}{% endif %}" placeholder="-1">
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="orienteeringUuid" class="col-sm-2 control-label">定向UUID:</label>
-                <input type="file" id="orienteeringUuid">
-            </div>
-
-            <div class="form-group">
-                <label for="issuedSysVersion" class="col-sm-2 control-label">下发系统版本:</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control" id="issuedSysVersion" name="issuedSysVersion">
+                <div class="col-sm-4">
+                    <input type="file" class="file" id="inputUUIDFile" name="inputUUIDFile">
                 </div>
             </div>
-
             <div class="form-group">
-                <label for="shieldSysVersion" class="col-sm-2 control-label">屏蔽系统版本:</label>
+                <label for="issuedOsVersion" class="col-sm-2 control-label">下发系统版本:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="reportSuccessCount" name="reportSuccessCount">
+                    <input type="text" class="form-control" id="issuedOsVersion" name="issuedOsVersion">
                 </div>
             </div>
-
+            <div class="form-group">
+                <label for="shieldOsVersion" class="col-sm-2 control-label">屏蔽系统版本:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="shieldOsVersion" name="shieldOsVersion">
+                </div>
+            </div>
             <div class="form-group">
                 <label for="issuedApp" class="col-sm-2 control-label">下发APP:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedApp" multiple="multiple">
+                        {% for item in data.apks %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="shieldApp" class="col-sm-2 control-label">屏蔽APP:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldApp" multiple="multiple">
+                        {% for item in data.apks %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="issuedDevice" class="col-sm-2 control-label">下发设备:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedDevice" multiple="multiple">
+                        {% for item in data.devices %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="shieldDevice" class="col-sm-2 control-label">屏蔽设备:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldDevice" multiple="multiple">
+                        {% for item in data.devices %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="issuedSdk" class="col-sm-2 control-label">下发SDK:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedSdk" multiple="multiple">
+                        {% for item in data.sdks %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="shieldSdk" class="col-sm-2 control-label">屏蔽SDK:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldSdk" multiple="multiple">
+                        {% for item in data.sdks %}
+                            <option value={{ item }}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="issuedCountry" class="col-sm-2 control-label">下发国家:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedCountry" id="issuedCountry">
+                        {% for item in data.country %}
+                            <option value={{ item.id }}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="shieldCountry" class="col-sm-2 control-label">屏蔽国家:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldCountry" id="shieldCountry">
+                        <option value="0">--请选择国家---</option>
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="issuedProvince" class="col-sm-2 control-label">下发省份:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedProvince" id="issuedProvince"
+                            onchange="toIssuedCity();">
+                        <option value="0">--请选择省份---</option>
+                        {% for item in data.province %}
+                            <option value={{ item.id }}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="shieldProvince" class="col-sm-2 control-label">屏蔽省份:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldProvince" id="shieldProvince"
+                            onchange="toShieldCity();">
+                        <option value="0">--请选择省份---</option>
+                        {% for item in data.province %}
+                            <option value={{ item.id }}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="issuedCity" class="col-sm-2 control-label">下发城市:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="issuedCity" id="issuedCity">
+                        <option value="0">--请选择城市---</option>
+                    </select>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="shieldCity" class="col-sm-2 control-label">屏蔽城市:</label>
-                <select class="col-sm-2">
-                    <option>Nothing Selected</option>
-                </select>
+                <div class="col-sm-2">
+                    <select class="form-control input-sm" name="shieldCity" id="shieldCity">
+                        <option value="0">--请选择城市---</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
