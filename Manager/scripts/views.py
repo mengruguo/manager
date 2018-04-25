@@ -46,6 +46,58 @@ def save_file(p, files):
         f.close()
 
 
+def app_choice_create(script, apps, flag):
+    for a in apps:
+        try:
+            AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=a), is_issued=flag)
+        except Exception as e:
+            print e
+        else:
+            continue
+
+
+def device_choice_create(script, devices, flag):
+    for d in devices:
+        try:
+            DeviceChoice.objects.create(script=script, device=Devices.objects.get(id=d.split('_')[0]),
+                                        is_issued=flag)
+        except Exception as e:
+            print e
+        else:
+            continue
+
+
+def sdk_choice_create(script, sdks, flag):
+    for s in sdks:
+        try:
+            SdkChoice.objects.create(script=script, sdk=Sdks.objects.get(version=s), is_issued=flag)
+        except Exception as e:
+            print e
+        else:
+            continue
+
+
+def province_choice_create(script, provinces, flag):
+    for p in provinces:
+        try:
+            ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=p),
+                                          is_issued=flag)
+        except Exception as e:
+            print e
+        else:
+            continue
+
+
+def city_choice_create(script, citys, flag):
+    for c in citys:
+        try:
+            CityChoice.objects.create(script=script, city=City.objects.get(id=c), is_issued=flag)
+        except Exception as e:
+            print e
+        else:
+            continue
+
+
 @login_required()
 def save(request):
     request_data = request.POST
@@ -78,7 +130,7 @@ def save(request):
     shield_device = request_data.getlist('shieldDevice')
     issued_sdk = request_data.getlist('issuedSdk')
     shield_sdk = request_data.getlist('shieldSdk')
-    issued_country = request_data.get('issuedCountry')
+    # issued_country = request_data.get('issuedCountry') //默认中国
     issued_province = request_data.get('issuedProvince')
     shield_province = request_data.get('shieldProvince')
     issued_city = request_data.get('issuedCity')
@@ -121,41 +173,26 @@ def save(request):
             except Exception as e:
                 print e
             else:
-                script_path = os.path.join(upload_path, request.user.username,
-                                           timezone.now().strftime('%Y-%m-%d %H-%M-%S'),
+                script_path = os.path.join(upload_path, request.user.username, data_type,
+                                           script.update_time.strftime('%Y-%m-%d %H-%M-%S'),
                                            str(number), str(script.id))
                 if not os.path.exists(script_path):
                     os.makedirs(script_path)
                 save_file(script_path, script_file)
                 save_file(script_path, key_file)
                 save_file(script_path, direct_uuid_file)
-                for app in issued_app:
-                    AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=app), is_issued=1)
-                for app in shield_app:
-                    AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=app), is_issued=0)
-                for d in issued_device:
-                    DeviceChoice.objects.create(script=script, device=Devices.objects.get(id=d.split('_')[0]),
-                                                is_issued=1)
-                for d in shield_device:
-                    DeviceChoice.objects.create(script=script, device=Devices.objects.get(id=d.split('_')[0]),
-                                                is_issued=0)
-                for s in issued_sdk:
-                    SdkChoice.objects.create(script=script, sdk=Sdks.objects.get(version=s), is_issued=1)
-                for s in shield_sdk:
-                    SdkChoice.objects.create(script=script, sdk=Sdks.objects.get(version=s), is_issued=0)
-                if issued_country:
-                    CountryChoice.objects.create(script=script, country=Country.objects.get(id=issued_country),
-                                                 is_issued=1)
-                if int(issued_province):
-                    ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=issued_province),
-                                                  is_issued=1)
-                if int(shield_province):
-                    ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=shield_province),
-                                                  is_issued=0)
-                if int(issued_city):
-                    CityChoice.objects.create(script=script, city=City.objects.get(id=issued_city), is_issued=1)
-                if int(shield_city):
-                    CityChoice.objects.create(script=script, city=City.objects.get(id=shield_city), is_issued=0)
+                app_choice_create(script, issued_app, 1)
+                app_choice_create(script, shield_app, 0)
+                device_choice_create(script, issued_device, 1)
+                device_choice_create(script, shield_device, 0)
+                sdk_choice_create(script, issued_sdk, 1)
+                sdk_choice_create(script, shield_sdk, 0)
+                CountryChoice.objects.create(script=script, country=Country.objects.get(id=1),
+                                             is_issued=1)
+                province_choice_create(script, issued_province, 1)
+                province_choice_create(script, shield_province, 0)
+                city_choice_create(script, issued_city, 1)
+                city_choice_create(script, shield_city, 0)
     return HttpResponseRedirect(reverse('scripts:index'))
 
 

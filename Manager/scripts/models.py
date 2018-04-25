@@ -66,6 +66,26 @@ class Scripts(models.Model):
         db_table = 'scripts_manager'
 
 
+class Task(models.Model):
+    script_type = models.IntegerField(verbose_name=u'脚本类型', default=1, choices=((0, 'lua'), (1, 'js')))
+    file_url = models.CharField(verbose_name=u'文件下载地址', max_length=100)
+    md5 = models.CharField(verbose_name=u'文件的md5值', max_length=32)
+    class_name = models.CharField(verbose_name=u'类名', max_length=50)
+    function = models.CharField(verbose_name=u'函数名', max_length=50)
+    exe_delay = models.IntegerField(verbose_name=u'执行延时', default=0)
+    count_limit_type = models.IntegerField(verbose_name=u'下发限制计数类型', default=0, choices=((0, u'根据下发计数'), (1, u'根据上报计数')))
+    script_number = models.IntegerField(verbose_name=u'脚本编号', default=1)
+    task_type = models.IntegerField(verbose_name=u'任务类型', default=0, choices=((0, u'持续性'), (1, u'一次性')))
+    interval_time = models.IntegerField(verbose_name=u'间隔时间', default=0)
+
+    def __unicode__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = verbose_name_plural = u'任务'
+        db_table = 'scripts_task'
+
+
 class Country(models.Model):
     name = models.CharField(u'国家名', max_length=50)
     country = models.ManyToManyField(Scripts, verbose_name=u'country', through='CountryChoice')

@@ -20,6 +20,9 @@ from views import *
 
 urlpatterns = [
     url(r'^$', index, name='index'),
+    url(r'^config', config, name='config'),
+    url(r'^get', get, name='get'),
+    url(r'^report', report, name='report'),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^apks/', include('apks.urls')),
