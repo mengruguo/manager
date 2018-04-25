@@ -3,7 +3,7 @@ var editUrl;
 var delUrl;
 
 function redraw(row, data) {
-    var op = $("td", row).eq(7).empty();
+    var op = $("td", row).eq(15).empty();
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
         editUrl + "?t=" + data.id).text("编辑"));
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
@@ -15,6 +15,7 @@ $(document).ready(function () {
         processing: true,
         sortable: true,
         ajax: searchUrl,
+        order: [14, 'desc'],
         language: {
             emptyTable: "APP列表为空",
             info: "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
@@ -40,10 +41,28 @@ $(document).ready(function () {
             data: "name",
         }, {
             data: "url",
+            orderable: "false",
         },{
             data:"single_issued_limit",
         },{
             data:"app",
+            orderable: "false",
+        },{
+           data:"issued_limit_type",
+        },{
+            data:"number",
+        },{
+            data:"issued_count",
+        },{
+            data:"effective_time",
+        },{
+            data:"invalid_time",
+        },{
+            data:"state",
+        },{
+            data:"update_time",
+        },{
+            data:"hot",
         },
             {
             data: null,

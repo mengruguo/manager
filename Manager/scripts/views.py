@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import os
 
@@ -15,11 +16,16 @@ from devices.models import Devices, DeviceChoice
 from sdks.models import Sdks, SdkChoice
 from django.utils import timezone
 
+work_dir = os.path.expanduser('~')
+upload_path = os.path.join(work_dir, 'uploads')
 
+
+@login_required()
 def index(request):
     return render(request, 'scripts/index.html')
 
 
+@login_required()
 def create(request):
     data = {'apks': [i.app_id for i in Apps.objects.all()],
             'devices': ['%s_%s' % (i.id, i.device_model) for i in Devices.objects.all()],
@@ -32,13 +38,15 @@ def create(request):
     return render(request, 'scripts/create.html', {'data': data, 'city': city})
 
 
-def save_file(upload_path, files):
-    f = open(os.path.join(upload_path, str(files.name)), 'wb+')
-    for chunk in files.chunks():
-        f.write(chunk)
-    f.close()
+def save_file(p, files):
+    if files:
+        f = open(os.path.join(p, str(files.name)), 'wb+')
+        for chunk in files.chunks():
+            f.write(chunk)
+        f.close()
 
 
+@login_required()
 def save(request):
     request_data = request.POST
     data_type = request_data.get('dataType')
@@ -75,21 +83,9 @@ def save(request):
     shield_province = request_data.get('shieldProvince')
     issued_city = request_data.get('issuedCity')
     shield_city = request_data.get('shieldCity')
-    upload_path = os.path.join(os.path.expanduser('~'), name)
-    if not os.path.exists(upload_path):
-        os.makedirs(upload_path)
-    script_file_path = ''
-    key_file_path = ''
-    direct_uuid_file = ''
-    for files in request.FILES.getlist('inputScriptFile'):
-        save_file(upload_path, files)
-        script_file_path = '%s_%s' % (script_file_path, files.name)
-    for files in request.FILES.getlist('inputKeyFile'):
-        save_file(upload_path, files)
-        key_file_path = '%s_%s' % (key_file_path, files.name)
-    for files in request.FILES.getlist('inputUUIDFile'):
-        save_file(upload_path, files)
-        direct_uuid_file = '%s_%s' % (direct_uuid_file, files.name)
+    script_file = request.FILES.get('inputScriptFile')
+    key_file = request.FILES.get('inputKeyFile')
+    direct_uuid_file = request.FILES.get('inputUUIDFile')
     script_id = request.POST.get('id')
     if script_id:
         script = Apps.objects.get(id=script_id)
@@ -98,7 +94,8 @@ def save(request):
     else:
         with transaction.atomic():
             try:
-                script = Scripts.objects.create(data_type=data_type,
+                script = Scripts.objects.create(create_user=request.user,
+                                                data_type=data_type,
                                                 time_slot_limit=time_slot_limit,
                                                 name=name,
                                                 number=number,
@@ -118,12 +115,20 @@ def save(request):
                                                 upload_fail=upload_fail_count if upload_fail_count else -1,
                                                 issued_os_version=str(issued_os_version),
                                                 shield_os_version=str(shield_os_version),
-                                                script_file_path=script_file_path,
-                                                key_file_path=key_file_path,
-                                                direct_uuid_file=direct_uuid_file)
+                                                script_file_path=script_file.name,
+                                                key_file_path=key_file.name,
+                                                direct_uuid_file=direct_uuid_file.name if direct_uuid_file else '')
             except Exception as e:
                 print e
             else:
+                script_path = os.path.join(upload_path, request.user.username,
+                                           timezone.now().strftime('%Y-%m-%d %H-%M-%S'),
+                                           str(number), str(script.id))
+                if not os.path.exists(script_path):
+                    os.makedirs(script_path)
+                save_file(script_path, script_file)
+                save_file(script_path, key_file)
+                save_file(script_path, direct_uuid_file)
                 for app in issued_app:
                     AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=app), is_issued=1)
                 for app in shield_app:
@@ -141,20 +146,20 @@ def save(request):
                 if issued_country:
                     CountryChoice.objects.create(script=script, country=Country.objects.get(id=issued_country),
                                                  is_issued=1)
-                if issued_province:
+                if int(issued_province):
                     ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=issued_province),
                                                   is_issued=1)
                 if int(shield_province):
                     ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=shield_province),
                                                   is_issued=0)
-                if issued_city:
+                if int(issued_city):
                     CityChoice.objects.create(script=script, city=City.objects.get(id=issued_city), is_issued=1)
                 if int(shield_city):
-                    print shield_city
                     CityChoice.objects.create(script=script, city=City.objects.get(id=shield_city), is_issued=0)
     return HttpResponseRedirect(reverse('scripts:index'))
 
 
+@login_required()
 def search(request):
     data = []
     app_id = ''
@@ -167,16 +172,28 @@ def search(request):
             print e
         data.append(
             {'id': i.id, 'data_type': i.data_type, 'os': 'android' if i.os_type else 'ios', 'name': i.name,
-             'url': i.url, 'single_issued_limit': i.single_issued_count, 'app': app_id})
+             'url': i.url, 'single_issued_limit': i.single_issued_count, 'app': app_id,
+             'issued_limit_type': '根据上报计数' if i.issued_limit_type else '根据下发计数',
+             'issued_count': i.issued_count, 'number': i.number,
+             'effective_time': i.effective_time, 'invalid_time': i.invalid_time,
+             'state': i.state, 'update_time': i.update_time.strftime('%Y-%m-%d %H:%M:%S'), 'hot': i.hot})
     return JsonResponse({'data': data})
 
 
+@login_required()
 def edit(request):
     data = []
-    #
+    try:
+        script = Scripts.objects.get(id=request.GET.get('t', ''))
+    except Exception as e:
+        print e
+    else:
+        data = []
+        # data = {'id': app.id, 'name': app.name, 'version': app.version, 'config_time': app.config_time}
     return render(request, 'scripts/create.html', {'data': data})
 
 
+@login_required()
 def delete(request):
     try:
         Scripts.objects.get(id=request.GET.get('t')).delete()
@@ -185,11 +202,13 @@ def delete(request):
     return render(request, 'scripts/index.html')
 
 
+@login_required()
 def issued(request):
     # 下线
     return render(request, 'scripts/index.html')
 
 
+@login_required()
 def allissued(request):
     # 全部下线
     return render(request, 'scripts/index.html')

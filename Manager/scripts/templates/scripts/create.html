@@ -40,23 +40,23 @@
             _shieldCity.html(citySelect);
         }
 
-        $("#inputScriptFile").fileinput({
-            language: "zh",
-            allowedFileExtensions: ['xml'],
-            showUpload: true,
-            showCaption: true,
-            browseClass: "btn btn-primary",
-            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
-        }).on('filepreupload', function (event, data, previewId, index) {     //上传中
-            var form = data.form, files = data.files, extra = data.extra,
-                    response = data.response, reader = data.reader;
-            console.log('文件正在上传');
-        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功
-            console.log('文件上传成功！' + data.id);
-
-        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败
-            console.log('文件上传失败！' + data.id);
-        })
+{#        $("#inputScriptFile").fileinput({#}
+{#            language: "zh",#}
+{#            allowedFileExtensions: ['xml'],#}
+{#            showUpload: true,#}
+{#            showCaption: true,#}
+{#            browseClass: "btn btn-primary",#}
+{#            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"#}
+{#        }).on('filepreupload', function (event, data, previewId, index) {     //上传中#}
+{#            var form = data.form, files = data.files, extra = data.extra,#}
+{#                    response = data.response, reader = data.reader;#}
+{#            console.log('文件正在上传');#}
+{#        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功#}
+{#            console.log('文件上传成功！' + data.id);#}
+{##}
+{#        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败#}
+{#            console.log('文件上传失败！' + data.id);#}
+{#        })#}
     </script>
 {% endblock %}
 
@@ -154,13 +154,15 @@
             <div class="form-group">
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
                 <div class="col-sm-4">
-                    <input type="file" class="file" id="inputScriptFile" name="inputScriptFile" multiple >
+                    <input type="file" class="file" id="inputScriptFile" name="inputScriptFile"
+                    data-allowed-file-extensions='["js","lua"]' data-show-upload="false" maxFileSize="1024">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
                 <div class="col-sm-4">
-                    <input type="file" class="file" id="inputKeyFile" name="inputKeyFile" >
+                    <input type="file" class="file" id="inputKeyFile" name="inputKeyFile"
+                    data-allowed-file-extensions='["pem"]' data-show-upload="false" maxFileSize="1024">
                 </div>
             </div>
             <div class="form-group">
@@ -232,7 +234,7 @@
                            value="{% if data %}{{ data.single_issued_count }}{% endif %}" placeholder="-1">
                 </div>
             </div>
-            {#一行#}
+            一行
             <div class="form-group">
                 <label for="uploadSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
                 <div class="col-sm-2">

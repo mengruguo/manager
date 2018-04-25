@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class ScriptState(object):
@@ -11,6 +12,7 @@ class ScriptState(object):
 
 
 class Scripts(models.Model):
+    create_user = models.ForeignKey(User, verbose_name=u'脚本创建者')
     data_type = models.CharField(verbose_name=u'数据类型', max_length=20)
     time_slot_limit = models.TextField(verbose_name=u'时段限制', null=True)
     name = models.CharField(verbose_name=u'脚本名称', max_length=50)
