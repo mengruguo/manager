@@ -3,6 +3,7 @@ var editUrl;
 var delUrl;
 var onlineUrl;
 var offlineUrl;
+var allUrl;
 
 function redraw(row, data) {
     var op = $("td", row).eq(15).empty();
@@ -23,6 +24,8 @@ function redraw(row, data) {
 }
 $(document).ready(function () {
     var table = $("#script_table");
+    var allOffline = $("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+        allUrl).text("全部下线")
     var dataTable = table.DataTable({
         processing: true,
         sortable: true,
@@ -93,4 +96,5 @@ $(document).ready(function () {
             }],
         createdRow: redraw,
     });
+    $("#script_table_wrapper").parent().append(allOffline);
 });

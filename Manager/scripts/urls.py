@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^edit', edit, name='edit'),
     url(r'^delete', delete, name='delete'),
     url(r'^online', online, name='online'),
-    url(r'^offline', offline, name='offline')
+    url(r'^offline', offline, name='offline'),
+    url(r'^all', alloffline, name='all')
 ]

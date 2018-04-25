@@ -314,3 +314,17 @@ def offline(request):
         script.state = 1
         script.save()
     return render(request, 'scripts/index.html')
+
+
+@login_required()
+def alloffline(request):
+    try:
+        scripts = Scripts.objects.filter(create_user=User.objects.get(username=request.user.username))
+    except Exception as e:
+        print e
+        print 1
+    else:
+        for s in scripts:
+            s.state = 1
+            s.save()
+    return render(request, 'scripts/index.html')
