@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class ScriptState(object):
@@ -47,17 +47,6 @@ class Scripts(models.Model):
     key_file_path = models.CharField(verbose_name=u'密钥文件名', max_length=100, null=True)
     direct_uuid_file = models.CharField(verbose_name=u'定向UUID文件名', max_length=100, null=True)
 
-    @property
-    def time_slot_limit(self):
-        try:
-            return eval(self._time_slot_limit)
-        except SyntaxError:
-            return []
-
-    @time_slot_limit.setter
-    def time_slot_limit(self, value):
-        self._time_slot_limit = str(value)
-
     def __unicode__(self):
         return str(self.id)
 
@@ -73,7 +62,8 @@ class Task(models.Model):
     class_name = models.CharField(verbose_name=u'类名', max_length=50)
     function = models.CharField(verbose_name=u'函数名', max_length=50)
     exe_delay = models.IntegerField(verbose_name=u'执行延时', default=0)
-    count_limit_type = models.IntegerField(verbose_name=u'下发限制计数类型', default=0, choices=((0, u'根据下发计数'), (1, u'根据上报计数')))
+    count_limit_type = models.IntegerField(verbose_name=u'下发限制计数类型', default=0,
+                                           choices=((0, u'根据下发计数'), (1, u'根据上报计数')))
     script_number = models.IntegerField(verbose_name=u'脚本编号', default=1)
     task_type = models.IntegerField(verbose_name=u'任务类型', default=0, choices=((0, u'持续性'), (1, u'一次性')))
     interval_time = models.IntegerField(verbose_name=u'间隔时间', default=0)

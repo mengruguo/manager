@@ -1,11 +1,12 @@
 # _*_coding:utf-8_*_
+import os
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import transaction
-
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-import os
 
 # Create your views here.
 from djcelery.views import JsonResponse
@@ -27,11 +28,14 @@ def index(request):
 
 @login_required()
 def create(request):
-    data = {'apks': [i.app_id for i in Apps.objects.all()],
-            'devices': ['%s_%s' % (i.id, i.device_model) for i in Devices.objects.all()],
-            'sdks': [i.version for i in Sdks.objects.all()],
-            'country': Country.objects.all(),
-            'province': Province.objects.all()}
+    user = User.objects.get(username=request.user.username)
+    data = {
+        'apks': [i.app_id for i in Apps.objects.filter(create_user=user)],
+        'devices': ['%s_%s' % (i.id, i.device_model) for i in
+                    Devices.objects.filter(create_user=user)],
+        'sdks': [i.version for i in Sdks.objects.filter(create_user=user)],
+        'country': Country.objects.all(),
+        'province': Province.objects.all()}
     city = []
     for item in City.objects.all():
         city.append({'id': item.id, 'province': item.province.id, 'name': item.name})
@@ -49,7 +53,8 @@ def save_file(p, files):
 def app_choice_create(script, apps, flag):
     for a in apps:
         try:
-            AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=a), is_issued=flag)
+            AppChoice.objects.update_or_create(script=script,
+                                               defaults={'app': Apps.objects.get(app_id=a), 'is_issued': flag})
         except Exception as e:
             print e
         else:
@@ -59,8 +64,9 @@ def app_choice_create(script, apps, flag):
 def device_choice_create(script, devices, flag):
     for d in devices:
         try:
-            DeviceChoice.objects.create(script=script, device=Devices.objects.get(id=d.split('_')[0]),
-                                        is_issued=flag)
+            DeviceChoice.objects.update_or_create(script=script,
+                                                  defaults={'device': Devices.objects.get(id=d.split('_')[0]),
+                                                            'is_issued': flag})
         except Exception as e:
             print e
         else:
@@ -70,7 +76,8 @@ def device_choice_create(script, devices, flag):
 def sdk_choice_create(script, sdks, flag):
     for s in sdks:
         try:
-            SdkChoice.objects.create(script=script, sdk=Sdks.objects.get(version=s), is_issued=flag)
+            SdkChoice.objects.update_or_create(script=script,
+                                               defaults={'sdk': Sdks.objects.get(version=s), 'is_issued': flag})
         except Exception as e:
             print e
         else:
@@ -80,8 +87,8 @@ def sdk_choice_create(script, sdks, flag):
 def province_choice_create(script, provinces, flag):
     for p in provinces:
         try:
-            ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=p),
-                                          is_issued=flag)
+            ProvinceChoice.objects.update_or_create(script=script, defaults={'province': Province.objects.get(id=p),
+                                                                             'is_issued': flag})
         except Exception as e:
             print e
         else:
@@ -91,7 +98,8 @@ def province_choice_create(script, provinces, flag):
 def city_choice_create(script, citys, flag):
     for c in citys:
         try:
-            CityChoice.objects.create(script=script, city=City.objects.get(id=c), is_issued=flag)
+            CityChoice.objects.update_or_create(script=script,
+                                                defaults={'city': City.objects.get(id=c), 'is_issued': flag})
         except Exception as e:
             print e
         else:
@@ -140,9 +148,56 @@ def save(request):
     direct_uuid_file = request.FILES.get('inputUUIDFile')
     script_id = request.POST.get('id')
     if script_id:
-        script = Apps.objects.get(id=script_id)
-        # TODO
-        script.save()
+        try:
+            script = Scripts.objects.get(id=script_id)
+        except Exception as e:
+            print e
+        else:
+            script.time_slot_limit = time_slot_limit
+            script.name = name
+            script.number = number
+            script.state = state
+            script.task_type = task_type
+            script.os_type = os_type
+            script.hot = hot
+            script.url = url
+            script.effective_time = effective_time
+            script.invalid_time = invalid_time
+            script.update_time = timezone.now()
+            script.class_name = class_name
+            script.method_name = method_name
+            script.throttle = throttle
+            script.issued_delay = issued_time
+            script.exec_delay = exec_time if exec_time else 0
+            script.issued_limit_type = issued_limit_type
+            script.issued_count = issued_count if issued_limit_type else -1
+            script.single_issued_count = single_issued_count if issued_limit_type else -1
+            script.upload_success = upload_success_count if upload_fail_count else -1
+            script.upload_fail = upload_fail_count if upload_fail_count else -1
+            script.issued_os_version = str(issued_os_version)
+            script.shield_os_version = str(shield_os_version)
+            script.script_file_path = script_file.name if script_file else ''
+            script.key_file_path = key_file.name if key_file else ''
+            script.direct_uuid_file = direct_uuid_file.name if direct_uuid_file else ''
+            script.save()
+            script_path = os.path.join(upload_path, request.user.username, data_type,
+                                       script.update_time.strftime('%Y-%m-%d %H-%M-%S'),
+                                       str(number), str(script.id))
+            if not os.path.exists(script_path):
+                os.makedirs(script_path)
+            save_file(script_path, script_file)
+            save_file(script_path, key_file)
+            save_file(script_path, direct_uuid_file)
+            app_choice_create(script, issued_app, 1)
+            app_choice_create(script, shield_app, 0)
+            device_choice_create(script, issued_device, 1)
+            device_choice_create(script, shield_device, 0)
+            sdk_choice_create(script, issued_sdk, 1)
+            sdk_choice_create(script, shield_sdk, 0)
+            province_choice_create(script, issued_province, 1)
+            province_choice_create(script, shield_province, 0)
+            city_choice_create(script, issued_city, 1)
+            city_choice_create(script, shield_city, 0)
     else:
         with transaction.atomic():
             try:
@@ -200,7 +255,7 @@ def save(request):
 def search(request):
     data = []
     app_id = ''
-    for i in Scripts.objects.all():
+    for i in Scripts.objects.filter(create_user=User.objects.filter(username=request.user.username)):
         try:
             app_choice = AppChoice.objects.filter(script=i).filter(is_issued=1)
             apps = [Apps.objects.get(id=a.app_id) for a in app_choice]
@@ -219,15 +274,13 @@ def search(request):
 
 @login_required()
 def edit(request):
-    data = []
     try:
         script = Scripts.objects.get(id=request.GET.get('t', ''))
     except Exception as e:
         print e
+        return render(request, 'scripts/create.html', {'data': {}})
     else:
-        data = []
-        # data = {'id': app.id, 'name': app.name, 'version': app.version, 'config_time': app.config_time}
-    return render(request, 'scripts/create.html', {'data': data})
+        return render(request, 'scripts/create.html', {'data': script})
 
 
 @login_required()
@@ -240,12 +293,24 @@ def delete(request):
 
 
 @login_required()
-def issued(request):
-    # 下线
+def online(request):
+    try:
+        script = Scripts.objects.get(id=request.GET.get('t'))
+    except Exception as e:
+        print e
+    else:
+        script.state = 0
+        script.save()
     return render(request, 'scripts/index.html')
 
 
 @login_required()
-def allissued(request):
-    # 全部下线
+def offline(request):
+    try:
+        script = Scripts.objects.get(id=request.GET.get('t'))
+    except Exception as e:
+        print e
+    else:
+        script.state = 1
+        script.save()
     return render(request, 'scripts/index.html')

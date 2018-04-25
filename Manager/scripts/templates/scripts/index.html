@@ -13,6 +13,10 @@
     <script src="{% version 'scripts/js/index.js' %}"></script>
     <script>
         searchUrl = "{% url 'scripts:search' %}";
+        editUrl = "{% url 'scripts:edit' %}";
+        delUrl = "{% url 'scripts:delete' %}";
+        onlineUrl = "{% url 'scripts:online' %}";
+        offlineUrl = "{% url 'scripts:offline' %}";
     </script>
 {% endblock %}
 
@@ -42,7 +46,7 @@
                 <th>状态</th>
                 <th>更新时间</th>
                 <th>热度</th>
-                <th width="10%">操作</th>
+                <th width="5%">操作</th>
             </tr>
             </thead>
         </table>

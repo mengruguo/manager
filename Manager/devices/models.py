@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
 from django.db import models
+
 from scripts.models import Scripts
 
 
 # Create your models here.
 class Devices(models.Model):
+    create_user = models.ForeignKey(User, verbose_name=u'设备创建者')
     device_firm = models.CharField(verbose_name=u'DEVICE厂商', max_length=50)
     device_model = models.TextField(verbose_name=u'DEVICE设备型号', null=True)
     version = models.TextField(verbose_name=u'DEVICE操作系统版本', null=True)

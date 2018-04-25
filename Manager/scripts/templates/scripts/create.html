@@ -72,13 +72,18 @@
         <form class="form-horizontal" method="post" action="{% url "scripts:save" %}" autocomplete="off"
               enctype="multipart/form-data">
             {% csrf_token %}
+            <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
                 <span style="color:red" class="required">*</span>
                 <label for="dataType" class="col-sm-2 control-label">数据类型:</label>
                 <div class="col-sm-2">
                     <select class="form-control input-sm" name="dataType" required="required">
-                        <option value="js">Js</option>
-                        <option value="lua">Lua</option>
+                        {% if data.data_type %}
+                            <option value="js">{{ data.data_type }}</option>
+                        {% else %}
+                            <option value="Js">Js</option>
+                            <option value="Lua">Lua</option>
+                        {% endif %}
                     </select>
                 </div>
             </div>
@@ -147,13 +152,15 @@
             <div class="form-group">
                 <label for="inputScriptHot" class="col-sm-2 control-label">热度:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputScriptHot" name="inputScriptHot">
+                    <input type="text" class="form-control" id="inputScriptHot" name="inputScriptHot"
+                           value="{% if data %}{{ data.hot }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputUrl" class="col-sm-2 control-label">URL地址:</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="inputUrl" name="inputUrl">
+                    <input type="text" class="form-control" id="inputUrl" name="inputUrl"
+                           value="{% if data %}{{ data.url }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">
@@ -218,7 +225,7 @@
                 <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时（秒）:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime"
-                           value="{% if data %}{{ data.exec_issued }}{% endif %}">
+                           value="{% if data %}{{ data.exec_delay }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">

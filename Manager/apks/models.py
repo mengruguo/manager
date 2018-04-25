@@ -2,12 +2,14 @@
 
 from __future__ import unicode_literals
 
+from django.contrib.auth.models import User
 from django.db import models
 
 from scripts.models import Scripts, Task
 
 
 class Apps(models.Model):
+    create_user = models.ForeignKey(User, verbose_name=u'APP创建者')
     app_id = models.IntegerField(verbose_name=u'APPID', default=10000)
     name = models.CharField(verbose_name=u'APP名称', max_length=50)
     version = models.TextField(verbose_name=u'APP版本', null=True)
