@@ -40,23 +40,23 @@
             _shieldCity.html(citySelect);
         }
 
-{#        $("#inputScriptFile").fileinput({#}
-{#            language: "zh",#}
-{#            allowedFileExtensions: ['xml'],#}
-{#            showUpload: true,#}
-{#            showCaption: true,#}
-{#            browseClass: "btn btn-primary",#}
-{#            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"#}
-{#        }).on('filepreupload', function (event, data, previewId, index) {     //上传中#}
-{#            var form = data.form, files = data.files, extra = data.extra,#}
-{#                    response = data.response, reader = data.reader;#}
-{#            console.log('文件正在上传');#}
-{#        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功#}
-{#            console.log('文件上传成功！' + data.id);#}
-{##}
-{#        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败#}
-{#            console.log('文件上传失败！' + data.id);#}
-{#        })#}
+        {#        $("#inputScriptFile").fileinput({#}
+        {#            language: "zh",#}
+        {#            allowedFileExtensions: ['xml'],#}
+        {#            showUpload: true,#}
+        {#            showCaption: true,#}
+        {#            browseClass: "btn btn-primary",#}
+        {#            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"#}
+        {#        }).on('filepreupload', function (event, data, previewId, index) {     //上传中#}
+        {#            var form = data.form, files = data.files, extra = data.extra,#}
+        {#                    response = data.response, reader = data.reader;#}
+        {#            console.log('文件正在上传');#}
+        {#        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功#}
+        {#            console.log('文件上传成功！' + data.id);#}
+        {##}
+        {#        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败#}
+        {#            console.log('文件上传失败！' + data.id);#}
+        {#        })#}
     </script>
 {% endblock %}
 
@@ -73,9 +73,10 @@
               enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="dataType" class="col-sm-2 control-label">数据类型:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="dataType">
+                    <select class="form-control input-sm" name="dataType" required="required">
                         <option value="js">Js</option>
                         <option value="lua">Lua</option>
                     </select>
@@ -89,9 +90,10 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="scriptState" class="col-sm-2 control-label">状态:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="scriptState">
+                    <select class="form-control input-sm" name="scriptState" required="required">
                         <option value=0>上线</option>
                         <option value=1>下线</option>
                         <option value=2>定向测试</option>
@@ -115,28 +117,31 @@
                 </div>
             </fieldset>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="taskType" class="col-sm-2 control-label">任务类型:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="taskType">
+                    <select class="form-control input-sm" name="taskType" required="required">
                         <option value=0>持续性</option>
                         <option value=1>一次性</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="osType" class="col-sm-2 control-label">系统类型:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="osType">
+                    <select class="form-control input-sm" name="osType" required="required">
                         <option value=0>Android</option>
                         <option value=1>Ios</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputScriptName" class="col-sm-2 control-label">名称:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptName" name="inputScriptName"
-                           value="{% if data %}{{ data.name }}{% endif %}" >
+                           value="{% if data %}{{ data.name }}{% endif %}" required="required">
                 </div>
             </div>
             <div class="form-group">
@@ -152,24 +157,26 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
                 <div class="col-sm-4">
                     <input type="file" class="file" id="inputScriptFile" name="inputScriptFile"
-                    data-allowed-file-extensions='["js","lua"]' data-show-upload="false" maxFileSize="1024">
+                           data-allowed-file-extensions='["js","lua"]' data-show-upload="false" maxFileSize="1024">
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
                 <div class="col-sm-4">
                     <input type="file" class="file" id="inputKeyFile" name="inputKeyFile"
-                    data-allowed-file-extensions='["pem"]' data-show-upload="false" maxFileSize="1024">
+                           data-allowed-file-extensions='["pem"]' data-show-upload="false" maxFileSize="1024">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputScriptNumber" class="col-sm-2 control-label">脚本编号:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptNumber" name="inputScriptNumber"
-                           value="{% if data %}{{ data.number }}{% endif %}" >
+                           value="{% if data %}{{ data.number }}{% endif %}">
                 </div>
                 <div class="col-sm-4">
                     <p style="color: red">同一类脚本填写的编号一样，独立的默认为空</p>
@@ -190,28 +197,32 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputThrottle" class="col-sm-2 control-label">间隔时间（分钟）:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputThrottle" name="inputThrottle"
                            value="{% if data %}{{ data.throttle }}{% endif %}"
-                           placeholder="0" >
+                           placeholder="0">
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputIssuedTime" class="col-sm-2 control-label">下发延时(小时):</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime"
-                           value="{% if data %}{{ data.issued_delay }}{% endif %}" >
+                           value="{% if data %}{{ data.issued_delay }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时（秒）:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime"
-                           value="{% if data %}{{ data.exec_issued }}{% endif %}" >
+                           value="{% if data %}{{ data.exec_issued }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="issuedLimitType" class="col-sm-2 control-label">下发限制计数类型:</label>
                 <div class="col-sm-2">
                     <select class="form-control input-sm" name="issuedLimitType">
@@ -221,6 +232,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputIssuedCount" class="col-sm-2 control-label">下发限量:</label>
                 <div class="col-sm-2">
                     <input type="number" class="form-control" id="inputIssuedCount" name="inputIssuedCount"
@@ -228,6 +240,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputSingleIssuedCount" class="col-sm-2 control-label">单个用户下发限量:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputSingleIssuedCount" name="inputSingleIssuedCount"
@@ -236,6 +249,7 @@
             </div>
             一行
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="uploadSuccessCount" class="col-sm-2 control-label">上报成功计数:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="uploadSuccessCount" name="uploadSuccessCount"
@@ -243,6 +257,7 @@
                 </div>
             </div>
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="uploadFailCount" class="col-sm-2 control-label">上报失败计数:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="uploadFailCount" name="uploadFailCount"

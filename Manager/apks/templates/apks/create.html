@@ -23,10 +23,11 @@
             {% csrf_token %}
             <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputAppName" class="col-sm-2 control-label">应用名称:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputAppName" name="inputAppName"
-                           value="{% if data %}{{ data.name }}{% endif %}" placeholder="请输入应用名称" required>
+                           value="{% if data %}{{ data.name }}{% endif %}" placeholder="请输入应用名称" required="required">
                 </div>
             </div>
             <div class="form-group">
@@ -43,7 +44,7 @@
                 <label for="inputAppVersion" class="col-sm-2 control-label">配置时间（单位：分钟）:</label>
                 <div class="col-sm-6">
                     <input class="form-control" type="text" id="inputAppConfig" name="inputAppConfig"
-                              value="{% if data %}{{ data.config_time }}{% endif %}" placeholder="5">
+                           value="{% if data %}{{ data.config_time }}{% endif %}" placeholder="5">
                 </div>
             </div>
             <div class="form-group">
