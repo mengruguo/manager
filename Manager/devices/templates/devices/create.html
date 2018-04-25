@@ -23,10 +23,12 @@
             {% csrf_token %}
             <input name="id" type="hidden" value="{{ data.id }}">
             <div class="form-group">
+                <span style="color:red" class="required">*</span>
                 <label for="inputDeviceFirm" class="col-sm-2 control-label">厂商:</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputDeviceFirm" name="inputDeviceFirm"
-                           value="{% if data %}{{ data.device_firm }}{% endif %}" placeholder="请输入厂商" required>
+                           value="{% if data %}{{ data.device_firm }}{% endif %}" placeholder="请输入厂商"
+                           required="required">
                 </div>
             </div>
 
