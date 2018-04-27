@@ -39,7 +39,7 @@ def save(request):
         else:
             app_id = 10000
         with transaction.atomic():
-            Apps.objects.create(app_id=app_id, name=app_name, crate_user=request.user, version=app_version,
+            Apps.objects.create(app_id=app_id, name=app_name, create_user=request.user, version=app_version,
                                 update_time=timezone.now(),
                                 config_time=app_config if app_config else 5)
     return HttpResponseRedirect(reverse('apks:index'))
@@ -49,7 +49,8 @@ def search(request):
     data = []
     for i in Apps.objects.filter(create_user=User.objects.get(username=request.user.username)):
         data.append(
-            {'id': i.id, 'app_id': i.app_id, 'name': i.name, 'version': i.version, 'update_time': i.update_time})
+            {'id': i.id, 'app_id': i.app_id, 'name': i.name, 'version': i.version, 'update_time': i.update_time,
+             'config_time': i.config_time})
     return JsonResponse({'data': data})
 
 

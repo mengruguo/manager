@@ -3,7 +3,7 @@ var editUrl;
 var delUrl;
 
 function redraw(row, data) {
-    var op = $("td", row).eq(5).empty();
+    var op = $("td", row).eq(6).empty();
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
         editUrl + "?t=" + data.id).text("编辑"));
     op.append($("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
@@ -39,7 +39,9 @@ $(document).ready(function () {
         }, {
             data: "version",
         }, {
-            data: "update_time"
+            data: "update_time",
+        }, {
+            data: "config_time",
         }, {
             data: null,
             orderable: false,
