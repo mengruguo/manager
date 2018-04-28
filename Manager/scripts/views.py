@@ -16,6 +16,7 @@ from apks.models import Apps, AppChoice
 from devices.models import Devices, DeviceChoice
 from sdks.models import Sdks, SdkChoice
 from django.utils import timezone
+import datetime
 
 work_dir = os.path.expanduser('~')
 upload_path = os.path.join(work_dir, 'uploads')
@@ -34,12 +35,11 @@ def create(request):
         'devices': ['%s_%s' % (i.id, i.device_model) for i in
                     Devices.objects.filter(create_user=user)],
         'sdks': [i.version for i in Sdks.objects.filter(create_user=user)],
-        'country': Country.objects.all(),
-        'province': Province.objects.all()}
+        'province': [{'id': i.id, 'name': i.name} for i in Province.objects.all()]}
     city = []
     for item in City.objects.all():
         city.append({'id': item.id, 'province': item.province.id, 'name': item.name})
-    return render(request, 'scripts/create.html', {'data': data, 'city': city})
+    return render(request, 'scripts/create.html', {'data': data, 'city': city, 'sequence': range(0, 24)})
 
 
 def save_file(p, files):
@@ -51,66 +51,68 @@ def save_file(p, files):
 
 
 def app_choice_create(script, apps, flag):
-    for a in apps:
-        try:
-            AppChoice.objects.update_or_create(script=script,
-                                               defaults={'app': Apps.objects.get(app_id=a), 'is_issued': flag})
-        except Exception as e:
-            print e
-        else:
-            continue
+    if apps:
+        for a in apps:
+            try:
+                AppChoice.objects.create(script=script, app=Apps.objects.get(app_id=a), is_issued=flag)
+            except Exception as e:
+                print e
+            else:
+                continue
 
 
 def device_choice_create(script, devices, flag):
-    for d in devices:
-        try:
-            DeviceChoice.objects.update_or_create(script=script,
-                                                  defaults={'device': Devices.objects.get(id=d.split('_')[0]),
-                                                            'is_issued': flag})
-        except Exception as e:
-            print e
-        else:
-            continue
+    if devices:
+        for d in devices:
+            try:
+                DeviceChoice.objects.create(script=script, device=Devices.objects.get(id=d.split('_')[0]),
+                                            is_issued=flag)
+            except Exception as e:
+                print e
+            else:
+                continue
 
 
 def sdk_choice_create(script, sdks, flag):
-    for s in sdks:
-        try:
-            SdkChoice.objects.update_or_create(script=script,
-                                               defaults={'sdk': Sdks.objects.get(version=s), 'is_issued': flag})
-        except Exception as e:
-            print e
-        else:
-            continue
+    if sdks:
+        for s in sdks:
+            try:
+                SdkChoice.objects.create(script=script, sdk=Sdks.objects.get(version=s), is_issued=flag)
+            except Exception as e:
+                print e
+            else:
+                continue
 
 
 def province_choice_create(script, provinces, flag):
-    for p in provinces:
-        try:
-            ProvinceChoice.objects.update_or_create(script=script, defaults={'province': Province.objects.get(id=p),
-                                                                             'is_issued': flag})
-        except Exception as e:
-            print e
-        else:
-            continue
+    if provinces:
+        for p in provinces:
+            try:
+                ProvinceChoice.objects.create(script=script, province=Province.objects.get(id=p),
+                                              is_issued=flag)
+            except Exception as e:
+                print e
+            else:
+                continue
 
 
 def city_choice_create(script, citys, flag):
-    for c in citys:
-        try:
-            CityChoice.objects.update_or_create(script=script,
-                                                defaults={'city': City.objects.get(id=c), 'is_issued': flag})
-        except Exception as e:
-            print e
-        else:
-            continue
+    if citys:
+        for c in citys:
+            try:
+                CityChoice.objects.create(script=script,
+                                          city=City.objects.get(id=c), is_issued=flag)
+            except Exception as e:
+                print e
+            else:
+                continue
 
 
 @login_required()
 def save(request):
     request_data = request.POST
     data_type = request_data.get('dataType')
-    time_slot_limit = request_data.get('inputTimeLimit')
+    # time_slot_limit = request_data.get('inputTimeLimit')
     state = request_data.get('scriptState')
     effective_time = request_data.get('effectiveTime')
     invalid_time = request_data.get('invalidTime')
@@ -147,6 +149,21 @@ def save(request):
     key_file = request.FILES.get('inputKeyFile')
     direct_uuid_file = request.FILES.get('inputUUIDFile')
     script_id = request.POST.get('id')
+    time_slot_limit = {}
+    for i in range(0, 24):
+        limit_tmp = request_data.get('singleTimeLimit_%s' % str(i))
+        time_slot_limit[i] = int(limit_tmp) if limit_tmp else 0
+    time_slot_limit['total'] = sum(time_slot_limit.values())
+    if effective_time:
+        try:
+            effective_time = datetime.datetime.strptime(effective_time.replace('T', ' '), '%Y-%m-%d %H:%M')
+        except Exception as e:
+            print e
+    if invalid_time:
+        try:
+            invalid_time = datetime.datetime.strptime(invalid_time.replace('T', ' '), '%Y-%m-%d %H:%M')
+        except Exception as e:
+            print e
     if script_id:
         try:
             script = Scripts.objects.get(id=script_id)
@@ -267,7 +284,8 @@ def search(request):
              'url': i.url, 'single_issued_limit': i.single_issued_count, 'app': app_id,
              'issued_limit_type': '根据上报计数' if i.issued_limit_type else '根据下发计数',
              'issued_count': i.issued_count, 'number': i.number,
-             'effective_time': i.effective_time, 'invalid_time': i.invalid_time,
+             'effective_time': i.effective_time.strftime('%Y-%m-%d %H:%M') if i.effective_time else '',
+             'invalid_time': i.invalid_time.strftime('%Y-%m-%d %H:%M') if i.invalid_time else '',
              'state': i.state, 'update_time': i.update_time.strftime('%Y-%m-%d %H:%M:%S'), 'hot': i.hot})
     return JsonResponse({'data': data})
 

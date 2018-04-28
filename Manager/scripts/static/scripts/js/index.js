@@ -24,7 +24,7 @@ function redraw(row, data) {
 }
 $(document).ready(function () {
     var table = $("#script_table");
-    var allOffline = $("<a></a>").addClass("btn btn-primary btn-xs").attr("type", "button").attr("href",
+    var allOffline = $("<a></a>").addClass("btn btn-primary").attr("type", "button").attr("href",
         allUrl).text("全部下线")
     var dataTable = table.DataTable({
         processing: true,

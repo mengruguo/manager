@@ -5,6 +5,7 @@
 {% block style %}
     <link href="{% static 'bootstrap/css/bootstrap-datatables.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/bootstrap-fileinput.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap-select.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block script %}
@@ -12,51 +13,14 @@
     <script src="{% static 'bootstrap/js/bootstrap-datatables.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-fileinput.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap-fileinput.zh.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'scripts/js/create.js' %}"></script>
     <script>
-        function toIssuedCity() {
-            var _issuedProvince = document.getElementById("issuedProvince");
-            var _issuedCity = $("#issuedCity");
-            var issuedProvinceValue = _issuedProvince.value;
-            var data = eval("{{ city|escapejs }}".replace(/u'/g, "'"));
-            var citySelect = '<option value="">--请选择城市---</option>';
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].province == issuedProvinceValue) {
-                    citySelect += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-            }
-            _issuedCity.html(citySelect);
-        }
-        function toShieldCity() {
-            var _shieldProvince = document.getElementById("shieldProvince");
-            var _shieldCity = $("#shieldCity");
-            var shieldProvinceValue = _shieldProvince.value;
-            var data = eval("{{ city|escapejs }}".replace(/u'/g, "'"));
-            var citySelect = '<option value="">--请选择城市---</option>';
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].province == shieldProvinceValue) {
-                    citySelect += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                }
-            }
-            _shieldCity.html(citySelect);
-        }
-
-        {#        $("#inputScriptFile").fileinput({#}
-        {#            language: "zh",#}
-        {#            allowedFileExtensions: ['xml'],#}
-        {#            showUpload: true,#}
-        {#            showCaption: true,#}
-        {#            browseClass: "btn btn-primary",#}
-        {#            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"#}
-        {#        }).on('filepreupload', function (event, data, previewId, index) {     //上传中#}
-        {#            var form = data.form, files = data.files, extra = data.extra,#}
-        {#                    response = data.response, reader = data.reader;#}
-        {#            console.log('文件正在上传');#}
-        {#        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功#}
-        {#            console.log('文件上传成功！' + data.id);#}
-        {##}
-        {#        }).on('fileerror', function (event, data, msg) {  //一个文件上传失败#}
-        {#            console.log('文件上传失败！' + data.id);#}
-        {#        })#}
+        var app = eval("{{ data.apks|escapejs }}".replace(/u'/g, "'"));
+        var device = eval("{{ data.devices|escapejs }}".replace(/u'/g, "'"));
+        var sdk = eval("{{ data.sdks|escapejs }}".replace(/u'/g, "'"));
+        var province = eval("{{ data.province|escapejs }}".replace(/u'/g, "'"));
+        var city = eval("{{ city|escapejs }}".replace(/u'/g, "'"));
     </script>
 {% endblock %}
 
@@ -91,7 +55,25 @@
                 <label for="inputTimeLimit" class="col-sm-2 control-label">时段限制:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputTimeLimit" name="inputTimeLimit"
-                           value="{% if data %}{{ data.time_slot_limit }}{% endif %}" placeholder="请输入时段(逗号分割)">
+                           value="{% if data %}{{ data.time_slot_limit }}{% endif %}" placeholder="" readonly>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-info" id="buttonSetTime">设置时段</button>
+                </div>
+            </div>
+            <div class="form-group" id="singleLimit" hidden>
+                {% for i in sequence %}
+                    <label for="inputTimeLimit" class="col-sm-2 control-label">{{ i }}:00</label>
+                    <div class="col-sm-2">
+                        <input type="number" class="form-control" id="singleTimeLimit_{{ i }}"
+                               name="singleTimeLimit_{{ i }}"
+                               value="{% if data %}{{ data.time_slot_limit }}{% endif %}">
+                    </div>
+                {% endfor %}
+                <label for="timeLimit_total" class="col-sm-2 control-label">合计</label>
+                <div class="col-sm-2">
+                    <input type="number" class="form-control" id="timeLimit_total" name="timeLimit_total"
+                           value="{% if data %}{{ data.time_slot_limit }}{% endif %}">
                 </div>
             </div>
             <div class="form-group">
@@ -108,16 +90,16 @@
             <fieldset>
                 <div class="form-group">
                     <label for="effectiveTime" class="col-sm-2 control-label">生效时间:</label>
-                    <div class="col-sm-2">
-                        <input type="date" class="form-control" id="effectiveTime" name="effectiveTime"
-                               value="{% if data %}{{ data.effective_time }}{% endif %}" placeholder="请选择时间">
+                    <div class="col-sm-3">
+                        <input type="datetime-local" class="form-control" id="effectiveTime" name="effectiveTime"
+                               value="{% if data %}{{ data.effective_time }}{% endif %}" placeholder="请选择时间" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="invalidTime" class="col-sm-2 control-label">失效时间:</label>
-                    <div class="col-sm-2">
-                        <input type="date" class="form-control" id="invalidTime" name="invalidTime"
-                               value="{% if data %}{{ data.invalid_time }}{% endif %}" placeholder="请选择时间">
+                    <div class="col-sm-3">
+                        <input type="datetime-local" class="form-control" id="invalidTime" name="invalidTime"
+                               value="{% if data %}{{ data.invalid_time }}{% endif %}" placeholder="请选择时间" required>
                     </div>
                 </div>
             </fieldset>
@@ -146,7 +128,7 @@
                 <label for="inputScriptName" class="col-sm-2 control-label">名称:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputScriptName" name="inputScriptName"
-                           value="{% if data %}{{ data.name }}{% endif %}" required="required">
+                           value="{% if data %}{{ data.name }}{% endif %}" required>
                 </div>
             </div>
             <div class="form-group">
@@ -168,7 +150,7 @@
                 <label for="inputScriptFile" class="col-sm-2 control-label">脚本文件:</label>
                 <div class="col-sm-4">
                     <input type="file" class="file" id="inputScriptFile" name="inputScriptFile"
-                           data-allowed-file-extensions='["js","lua"]' data-show-upload="false" maxFileSize="1024">
+                           data-allowed-file-extensions='["js","lua"]' data-show-upload="false" maxFileSize="1024" required>
                 </div>
             </div>
             <div class="form-group">
@@ -176,7 +158,7 @@
                 <label for="inputKeyFile" class="col-sm-2 control-label">密钥文件:</label>
                 <div class="col-sm-4">
                     <input type="file" class="file" id="inputKeyFile" name="inputKeyFile"
-                           data-allowed-file-extensions='["pem"]' data-show-upload="false" maxFileSize="1024">
+                           data-allowed-file-extensions='["pem"]' data-show-upload="false" maxFileSize="1024" required>
                 </div>
             </div>
             <div class="form-group">
@@ -209,7 +191,7 @@
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputThrottle" name="inputThrottle"
                            value="{% if data %}{{ data.throttle }}{% endif %}"
-                           placeholder="0">
+                           placeholder="0" required>
                 </div>
             </div>
             <div class="form-group">
@@ -217,7 +199,7 @@
                 <label for="inputIssuedTime" class="col-sm-2 control-label">下发延时(小时):</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputIssuedTime" name="inputIssuedTime"
-                           value="{% if data %}{{ data.issued_delay }}{% endif %}">
+                           value="{% if data %}{{ data.issued_delay }}{% endif %}" required>
                 </div>
             </div>
             <div class="form-group">
@@ -225,7 +207,7 @@
                 <label for="inputExecuteTime" class="col-sm-2 control-label">执行延时（秒）:</label>
                 <div class="col-sm-2">
                     <input type="text" class="form-control" id="inputExecuteTime" name="inputExecuteTime"
-                           value="{% if data %}{{ data.exec_delay }}{% endif %}">
+                           value="{% if data %}{{ data.exec_delay }}{% endif %}" required>
                 </div>
             </div>
             <div class="form-group">
@@ -292,7 +274,7 @@
             <div class="form-group">
                 <label for="issuedApp" class="col-sm-2 control-label">下发APP:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedApp" multiple="multiple">
+                    <select class="selectpicker" id="issuedApp" name="issuedApp" multiple>
                         {% for item in data.apks %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -302,7 +284,7 @@
             <div class="form-group">
                 <label for="shieldApp" class="col-sm-2 control-label">屏蔽APP:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldApp" multiple="multiple">
+                    <select class="selectpicker" id="shieldApp" name="shieldApp" multiple>
                         {% for item in data.apks %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -312,7 +294,7 @@
             <div class="form-group">
                 <label for="issuedDevice" class="col-sm-2 control-label">下发设备:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedDevice" multiple="multiple">
+                    <select class="selectpicker" id="issuedDevice" name="issuedDevice" multiple>
                         {% for item in data.devices %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -323,7 +305,7 @@
             <div class="form-group">
                 <label for="shieldDevice" class="col-sm-2 control-label">屏蔽设备:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldDevice" multiple="multiple">
+                    <select class="selectpicker" id="shieldDevice" name="shieldDevice" multiple>
                         {% for item in data.devices %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -333,7 +315,7 @@
             <div class="form-group">
                 <label for="issuedSdk" class="col-sm-2 control-label">下发SDK:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedSdk" multiple="multiple">
+                    <select class="selectpicker" id="issuedSdk" name="issuedSdk" multiple>
                         {% for item in data.sdks %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -343,7 +325,7 @@
             <div class="form-group">
                 <label for="shieldSdk" class="col-sm-2 control-label">屏蔽SDK:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldSdk" multiple="multiple">
+                    <select class="selectpicker" id="shieldSdk" name="shieldSdk" multiple>
                         {% for item in data.sdks %}
                             <option value={{ item }}>{{ item }}</option>
                         {% endfor %}
@@ -353,26 +335,15 @@
             <div class="form-group">
                 <label for="issuedCountry" class="col-sm-2 control-label">下发国家:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedCountry" id="issuedCountry">
-                        {% for item in data.country %}
-                            <option value={{ item.id }}>{{ item.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="shieldCountry" class="col-sm-2 control-label">屏蔽国家:</label>
-                <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldCountry" id="shieldCountry">
-                        <option value="0">--请选择国家---</option>
+                    <select class="selectpicker" id="issuedCountry" name="issuedCountry">
+                        <option value="中国">中国</option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
                 <label for="issuedProvince" class="col-sm-2 control-label">下发省份:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedProvince" id="issuedProvince"
-                            onchange="toIssuedCity();">
+                    <select class="selectpicker" id="issuedProvince" name="issuedProvince" multiple>
                         <option value="0">--请选择省份---</option>
                         {% for item in data.province %}
                             <option value={{ item.id }}>{{ item.name }}</option>
@@ -383,8 +354,7 @@
             <div class="form-group">
                 <label for="shieldProvince" class="col-sm-2 control-label">屏蔽省份:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldProvince" id="shieldProvince"
-                            onchange="toShieldCity();">
+                    <select class="selectpicker" id="shieldProvince" name="shieldProvince" multiple>
                         <option value="0">--请选择省份---</option>
                         {% for item in data.province %}
                             <option value={{ item.id }}>{{ item.name }}</option>
@@ -395,7 +365,7 @@
             <div class="form-group">
                 <label for="issuedCity" class="col-sm-2 control-label">下发城市:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="issuedCity" id="issuedCity">
+                    <select class="selectpicker" id="issuedCity" name="issuedCity" multiple>
                         <option value="0">--请选择城市---</option>
                     </select>
                 </div>
@@ -403,7 +373,7 @@
             <div class="form-group">
                 <label for="shieldCity" class="col-sm-2 control-label">屏蔽城市:</label>
                 <div class="col-sm-2">
-                    <select class="form-control input-sm" name="shieldCity" id="shieldCity">
+                    <select class="selectpicker" id="shieldCity" name="shieldCity" multiple>
                         <option value="0">--请选择城市---</option>
                     </select>
                 </div>

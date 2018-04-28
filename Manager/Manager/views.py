@@ -4,13 +4,15 @@ import hashlib
 import json
 import logging
 import os
+from django.utils import timezone
 
 from django.http import JsonResponse
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import render
 
 from apks.models import Apps, Report
-from scripts.models import Task
+from scripts.models import Task, Scripts
+from django.db.models import F
 
 logger = logging.getLogger(__name__)
 # WORK_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,9 +53,20 @@ def get(request):
         except Apps.DoesNotExist:
             pass
         else:
-            scripts = apps.app.order_by('-hot')
+            now = timezone.now()
+            scripts = apps.app.order_by('-hot').filter(state=0).filter(effective_time__gt=now,
+                                                                       invalid_time__lt=now).filter(
+                issued_success__lt=F('issued_count'))
+
             if scripts.count():
                 s = scripts.first()
+                try:
+                    new_s = Scripts.objects.get(id=s.id)
+                except Exception as e:
+                    print e
+                else:
+                    if not new_s.issued_limit_type:
+                        new_s.issued_success += 1
                 script_path = os.path.join(WORK_DIR, 'uploads', s.create_user, s.data_type,
                                            s.update_time.strftime('%Y-%m-%d %H:%M:%S'), s.id, s.script_file_path)
                 if os.path.exists(script_path):
